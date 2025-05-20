@@ -1,5 +1,5 @@
 <?php
-$nom = "Campons";
+$nom = "Crampons";
 $prix = 160;
 $url = "https://www.montagnes-magazine.com/media/MATOS/2021/novembre/petzl.jpeg";
 

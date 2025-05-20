@@ -15,6 +15,8 @@
         <?php require_once 'item.php' ?>
         <?php require_once 'item1.php' ?>
         <?php require_once 'item2.php' ?>
+
+        <?php require_once 'datas/catalog-with-keys.php' ?>
     </main>
     <?php require_once 'footer.php' ?>
 </body>
