@@ -24,21 +24,21 @@ $crampons = [
 
 <div class="item">
     <h3><?php echo $corde["name"] ?></h1>
-    <p>Prix : <?php echo $corde["prix"] ?>$</p>
+    <p>Prix : <?= $corde["price"] ?>$</p>
     <div class="containerImgItem">
         <img class="imgItem" src=<?php echo $corde["picture_url"] ?> alt="image ecouteur" />
     </div>
 </div>
 <div class="item">
     <h3><?php echo $piolet["name"] ?></h1>
-    <p>Prix : <?php echo $piolet["prix"] ?>$</p>
+    <p>Prix : <?= $piolet["price"] ?>$</p>
     <div class="containerImgItem">
         <img class="imgItem" src=<?php echo $piolet["picture_url"] ?> alt="image ecouteur" />
     </div>
 </div>
 <div class="item">
     <h3><?php echo $crampons["name"] ?></h1>
-    <p>Prix : <?php echo $crampons["prix"] ?>$</p>
+    <p>Prix : <?= $crampons["price"] ?>$</p>
     <div class="containerImgItem">
         <img class="imgItem" src=<?php echo $crampons["picture_url"]  ?> alt="image ecouteur" />
     </div>
