@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Contacter les fournisseurs." />
-    <link rel="stylesheet" href="styles/style.css"/>
-    <title>Contact</title>
-</head>
+<?php
+require_once 'header.php';
+require_once './datas/head.php';
+echo head("Contact", "Contacter les fournisseurs.");
+?>
 
 <body >
     <?php require_once 'header.php' ?>

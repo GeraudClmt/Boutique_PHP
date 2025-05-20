@@ -1,4 +1,6 @@
 <?php
+require_once 'header.php';
+
 $products = [
     "corde" => [
         "name" => "Corde d'escalade",

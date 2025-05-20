@@ -1,4 +1,5 @@
 <?php
+require_once 'header.php';
 $products=["Corde d'escalade", "Piolet", "Campons"];
 
 sort($products);
