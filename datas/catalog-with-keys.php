@@ -5,23 +5,23 @@ require_once 'my-functions.php';
 
 $corde = [
     "name" => "Corde d'escalade",
-    "price" => 12000,
+    "price" => 12990,
     "weight" => 3,
     "discount" => 10,
     "picture_url" => "https://www.montania-sport.com/46348-thickbox_default/corde-a-simple-escalade-80m-karma-98mm-solid-orange-beal.jpg"
 ];
 $casque = [
     "name" => "Casque",
-    "price" => 15000,
+    "price" => 8099,
     "weight" => 1,
-    "discount" => 5,
+    "discount" => null,
     "picture_url" => "https://glisshop-glisshop-fr-storage.omn.proximis.com/Imagestorage/imagesSynchro/735/735/be2c82cdff7da0ca122e9a1565fe7d0d73cc7b64_H25PETZESC4453545_0.jpeg"
 ];
 $gourde = [
     "name" => "Gourde",
-    "price" => 16000,
+    "price" => 2000,
     "weight" => 1,
-    "discount" => null,
+    "discount" => 2,
     "picture_url" => "https://shop-ta-gourde.com/cdn/shop/products/gourde_motif_montagne_1200x1200.jpg?v=1576860033"
 ];
 ?>
