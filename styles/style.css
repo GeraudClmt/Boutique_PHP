@@ -36,7 +36,7 @@ main{
     height: 20em;
     width: 20em;
     margin: 2em;
-    padding: 0.5em;
+    padding: 1em;
     transition: 1s;
 }
 .item:hover{
@@ -58,4 +58,8 @@ main{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+.solde{
+    color: red;
 }

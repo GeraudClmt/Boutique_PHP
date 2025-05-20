@@ -7,7 +7,6 @@ echo head("Boutique", "Des milliers d'articles sont displonible.");
 <body >
     <?php require_once 'header.php' ?>
     <main class="listeBoutique">
-        <?php require_once 'datas/simple-catalog.php' ?>
         <?php require_once 'datas/catalog-with-keys.php' ?>
         <?php require_once 'datas/multidimentional-catalog.php' ?>
     </main>
