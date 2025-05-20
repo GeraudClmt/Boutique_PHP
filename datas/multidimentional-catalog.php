@@ -24,25 +24,17 @@ $products = [
 ];
 ?>
 
-
+<!--Affichage-->
+<?php
+foreach($products as $item){ 
+?>
 <div class="item">
-    <h3><?php echo $products["corde"]["name"] ?></h1>
-    <p>Prix : <?php echo $products["corde"]["price"] ?>$</p>
+    <h3><?= $item["name"] ?></h1>
+    <p>Price : <?= $item["price"] ?>$</p>
     <div class="containerImgItem">
-        <img class="imgItem" src=<?php echo $products["corde"]["picture_url"] ?> alt="image ecouteur" />
+        <img class="imgItem" src=<?= $item["picture_url"] ?> alt="image ecouteur" />
     </div>
 </div>
-<div class="item">
-    <h3><?php echo $products["piolet"]["name"] ?></h1>
-    <p>Prix : <?php echo $products["piolet"]["price"] ?>$</p>
-    <div class="containerImgItem">
-        <img class="imgItem" src=<?php echo $products["piolet"]["picture_url"] ?> alt="image ecouteur" />
-    </div>
-</div>
-<div class="item">
-    <h3><?php echo $products["crampons"]["name"] ?></h1>
-    <p>Prix : <?php echo $products["crampons"]["price"] ?>$</p>
-    <div class="containerImgItem">
-        <img class="imgItem" src=<?php echo $products["crampons"]["picture_url"]  ?> alt="image ecouteur" />
-    </div>
-</div>
+<?php
+}
+?>
