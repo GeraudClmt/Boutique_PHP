@@ -1,4 +1,3 @@
-
 Déclaration PHP:
 <?php ... ?>
 Début/fin de code PHP

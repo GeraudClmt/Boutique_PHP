@@ -1,7 +1,3 @@
-
-
-
-
 <div class="banniere">
     <h1>La boutique du Géro</h1>
     <div>
