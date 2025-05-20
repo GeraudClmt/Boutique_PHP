@@ -12,11 +12,8 @@
 <body >
     <?php require_once 'header.php' ?>
     <main class="listeBoutique">
-        <?php require_once 'item.php' ?>
-        <?php require_once 'item1.php' ?>
-        <?php require_once 'item2.php' ?>
 
-        <?php require_once 'datas/catalog-with-keys.php' ?>
+        <?php require_once 'datas/multidimentional-catalog.php' ?>
     </main>
     <?php require_once 'footer.php' ?>
 </body>
