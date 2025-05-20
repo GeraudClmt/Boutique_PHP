@@ -1,7 +1,7 @@
 <?php
-$nom = "Corde d'escalade";
-$prix = 120;
-$url = "https://contents.mediadecathlon.com/p2615071/k$b2f1933c71b675afddb50d80df8b4a9b/sq/corde-descalade-95-mm-x-80-m-vertika.jpg?format=auto&f=800x0";
+$nom = "Campons";
+$prix = 160;
+$url = "https://www.montagnes-magazine.com/media/MATOS/2021/novembre/petzl.jpeg";
 
 ?>
 

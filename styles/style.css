@@ -1,5 +1,7 @@
 
-
+main{
+    min-height: 600px;
+}
 .banniere{
     height: 6em;
     display: flex;
@@ -17,6 +19,9 @@
     color: black;
     margin: 0.5em;
     font-size: larger;
+}
+.lienMenu:hover{
+    text-decoration: underline 2px;
 }
 
 .item{
@@ -38,4 +43,9 @@
 }
 .containerImgItem{
     display: flex;
+}
+
+.listeBoutique{
+    display: flex;
+    justify-content: center;
 }
