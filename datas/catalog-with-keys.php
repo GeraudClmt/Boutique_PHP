@@ -1,47 +1,61 @@
 <?php
 require_once 'header.php';
+require_once 'my-functions.php';
+
 
 $corde = [
     "name" => "Corde d'escalade",
-    "price" => 120,
+    "price" => 12000,
     "weight" => 3,
     "discount" => 10,
-    "picture_url" => "https://contents.mediadecathlon.com/p2615071/k$b2f1933c71b675afddb50d80df8b4a9b/sq/corde-descalade-95-mm-x-80-m-vertika.jpg?format=auto&f=800x0"
+    "picture_url" => "https://www.montania-sport.com/46348-thickbox_default/corde-a-simple-escalade-80m-karma-98mm-solid-orange-beal.jpg"
 ];
-$piolet = [
-    "name" => "Piolet",
-    "price" => 150,
+$casque = [
+    "name" => "Casque",
+    "price" => 15000,
     "weight" => 1,
     "discount" => 5,
-    "picture_url" => "https://skitour.fr/matos/photos/5508.jpg"
+    "picture_url" => "https://glisshop-glisshop-fr-storage.omn.proximis.com/Imagestorage/imagesSynchro/735/735/be2c82cdff7da0ca122e9a1565fe7d0d73cc7b64_H25PETZESC4453545_0.jpeg"
 ];
-$crampons = [
-    "name" => "Crampons",
-    "price" => 160,
+$gourde = [
+    "name" => "Gourde",
+    "price" => 16000,
     "weight" => 1,
-    "discount" => 3,
-    "picture_url" => "https://www.montagnes-magazine.com/media/MATOS/2021/novembre/petzl.jpeg"
+    "discount" => null,
+    "picture_url" => "https://shop-ta-gourde.com/cdn/shop/products/gourde_motif_montagne_1200x1200.jpg?v=1576860033"
 ];
 ?>
 
 <div class="item">
     <h3><?php echo $corde["name"] ?></h1>
-    <p>Prix : <?= $corde["price"] ?>$</p>
+    <?php if($corde["discount"]) :?>
+        <h3 class="solde">Solde</h3>
+    <?php endif; ?>
+    <p>Prix TTC : <?= formatPrice(discountedPrice($corde["price"], $corde["discount"])) ?></p>
+    <p>Prix HT : <?= priceExcludingTVA(discountedPrice($corde["price"], $corde["discount"])) ?></p>
     <div class="containerImgItem">
         <img class="imgItem" src=<?php echo $corde["picture_url"] ?> alt="image ecouteur" />
     </div>
 </div>
 <div class="item">
-    <h3><?php echo $piolet["name"] ?></h1>
-    <p>Prix : <?= $piolet["price"] ?>$</p>
+    <h3><?php echo $casque["name"] ?></h1>
+    <?php if($casque["discount"]) :?>
+        <h3 class="solde">Solde</h3>
+    <?php endif; ?>
+    <p>Prix TTC : <?= formatPrice(discountedPrice($casque["price"], $casque["discount"])) ?></p>
+    <p>Prix HT : <?= priceExcludingTVA(discountedPrice($casque["price"], $casque["discount"])) ?></p>
     <div class="containerImgItem">
-        <img class="imgItem" src=<?php echo $piolet["picture_url"] ?> alt="image ecouteur" />
+        <img class="imgItem" src=<?php echo $casque["picture_url"] ?> alt="image ecouteur" />
     </div>
 </div>
 <div class="item">
-    <h3><?php echo $crampons["name"] ?></h1>
-    <p>Prix : <?= $crampons["price"] ?>$</p>
+    <h3><?php echo $gourde["name"] ?></h1>
+    <?php if($gourde["discount"]) :?>
+        <h3 class="solde">Solde</h3>
+    <?php endif; ?>
+    <p>Prix TTC : <?= formatPrice(discountedPrice($gourde["price"], $gourde["discount"])) ?></p>
+    <p>Prix HT : <?= priceExcludingTVA(discountedPrice($gourde["price"], $gourde["discount"])) ?></p>
     <div class="containerImgItem">
-        <img class="imgItem" src=<?php echo $crampons["picture_url"]  ?> alt="image ecouteur" />
+        <img class="imgItem" src=<?php echo $gourde["picture_url"]  ?> alt="image ecouteur" />
     </div>
 </div>

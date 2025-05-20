@@ -1,5 +1,6 @@
 <?php
 require_once 'header.php';
+require_once 'my-functions.php';
 
 $products = [
     "corde" => [
@@ -32,7 +33,11 @@ foreach($products as $item){
 ?>
 <div class="item">
     <h3><?= $item["name"] ?></h1>
-    <p>Price : <?= $item["price"] ?>$</p>
+    <?php if($item["discount"]) :?>
+        <h3 class="solde">Solde</h3>
+    <?php endif; ?>
+    <p>Prix TTC : <?= formatPrice(discountedPrice($item["price"], $item["discount"])) ?></p>
+    <p>Prix HT : <?= priceExcludingTVA(discountedPrice($item["price"], $item["discount"])) ?></p>
     <div class="containerImgItem">
         <img class="imgItem" src=<?= $item["picture_url"] ?> alt="image ecouteur" />
     </div>
