@@ -10,7 +10,7 @@ $listeDiscount = $_POST["discount"];
 
 foreach (array_keys($listePrice) as $item) {
     if (isset($listeQuantite[$item]) && $listeQuantite[$item] != "0") {
-        echo "Element : " . $item . " Quantité : " . $listeQuantite[$item] . " prix : " . $listePrice[$item];
+        //echo "Element : " . $item . " Quantité : " . $listeQuantite[$item] . " prix : " . $listePrice[$item];
 
         $listeProduitCommande[$item] = [
             "name" => $item,
@@ -20,7 +20,6 @@ foreach (array_keys($listePrice) as $item) {
             "discount" => (int) $listeDiscount[$item]
         ];
 
-        echo $listeProduitCommande[$item]['discount'];
     }
 }
 

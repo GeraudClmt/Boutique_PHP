@@ -31,8 +31,8 @@ $gourde = [
     <?php if($corde["discount"]) :?>
         <p class="solde"><?= formatPrice($corde["price"]) ?> TTC</p>
     <?php endif; ?>
-    <p>Prix TTC : <?= formatPrice(discountedPrice($corde["price"], $corde["discount"])) ?></p>
-    <p>Prix HT : <?= priceExcludingTVA(discountedPrice($corde["price"], $corde["discount"])) ?></p>
+    <p>Prix TTC : <?= formatPrice(discountedPrice((int) $corde["price"],(int) $corde["discount"])) ?></p>
+    <p>Prix HT : <?= priceExcludingTVA(discountedPrice((int) $corde["price"], (int) $corde["discount"])) ?></p>
     <div class="containerImgItem">
         <img class="imgItem" src=<?php echo $corde["picture_url"] ?> alt="image ecouteur" />
     </div>
@@ -42,8 +42,8 @@ $gourde = [
     <?php if($casque["discount"]) :?>
         <p class="solde"><?= formatPrice($casque["price"]) ?> TTC</p>
     <?php endif; ?>
-    <p>Prix TTC : <?= formatPrice(discountedPrice($casque["price"], $casque["discount"])) ?></p>
-    <p>Prix HT : <?= priceExcludingTVA(discountedPrice($casque["price"], $casque["discount"])) ?></p>
+    <p>Prix TTC : <?= formatPrice(discountedPrice((int) $casque["price"],(int) $casque["discount"])) ?></p>
+    <p>Prix HT : <?= priceExcludingTVA(discountedPrice((int) $casque["price"],(int) $casque["discount"])) ?></p>
     <div class="containerImgItem">
         <img class="imgItem" src=<?php echo $casque["picture_url"] ?> alt="image ecouteur" />
     </div>
@@ -53,8 +53,8 @@ $gourde = [
     <?php if($gourde["discount"]) :?>
         <p class="solde"><?= formatPrice($gourde["price"]) ?> TTC</p>
     <?php endif; ?>
-    <p>Prix TTC : <?= formatPrice(discountedPrice($gourde["price"], $gourde["discount"])) ?></p>
-    <p>Prix HT : <?= priceExcludingTVA(discountedPrice($gourde["price"], $gourde["discount"])) ?></p>
+    <p>Prix TTC : <?= formatPrice(discountedPrice((int)$gourde["price"],(int) $gourde["discount"])) ?></p>
+    <p>Prix HT : <?= priceExcludingTVA(discountedPrice((int)$gourde["price"],(int) $gourde["discount"])) ?></p>
     <div class="containerImgItem">
         <img class="imgItem" src=<?php echo $gourde["picture_url"]  ?> alt="image ecouteur" />
     </div>
