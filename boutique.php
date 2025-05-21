@@ -2,8 +2,6 @@
 require_once './datas/head.php';
 echo head("Boutique", "Des milliers d'articles sont displonible.");
 ?>
-
-
 <body>
     <?php require_once 'header.php' ?>
     <main >

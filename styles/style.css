@@ -64,3 +64,31 @@ main{
     color: red;
     text-decoration: line-through;
 }
+.containerPanier{
+    margin-top: 5em;
+    width: 60%;
+}
+.mainPanier{
+    display: flex;
+    justify-content: center;
+}
+.elementPanier{
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 2px solid black;
+}
+.elementPanier p{
+    width: 2em;
+    text-align: center;
+}
+.prixTotal{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+.prixTotal p{
+    margin-top: 2em;
+    width: 10em;
+    padding-right: 3em;
+    border-bottom: 2px solid black;
+}
