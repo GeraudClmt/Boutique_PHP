@@ -4,7 +4,7 @@ require_once 'my-functions.php';
 
 $products = [
     "corde" => [
-        "name" => "Corde d'escalade",
+        "name" => "Corde",
         "price" => 12099,
         "weight" => 3000,
         "discount" => 10,
@@ -25,23 +25,31 @@ $products = [
         "picture_url" => "https://www.montagnes-magazine.com/media/MATOS/2021/novembre/petzl.jpeg"
     ]
 ];
+
 ?>
 
 <!--Affichage-->
 <?php
-foreach($products as $item){ 
+foreach ($products as $item) {
 ?>
-<div class="item">
-    <h3><?= $item["name"] ?></h1>
-    <?php if($item["discount"]) :?>
-        <p class="solde"><?= formatPrice($item["price"]) ?> TTC</p>
-    <?php endif; ?>
-    <p>Prix TTC : <?= formatPrice(discountedPrice($item["price"], $item["discount"])) ?></p>
-    <p>Prix HT : <?= priceExcludingTVA(discountedPrice($item["price"], $item["discount"])) ?></p>
-    <div class="containerImgItem">
-        <img class="imgItem" src=<?= $item["picture_url"] ?> alt="image ecouteur" />
+    <div class="item">
+        <h3><?= $item["name"] ?></h1>
+            <?php if ($item["discount"]) : ?>
+                <p class="solde"><?= formatPrice($item["price"]) ?> TTC</p>
+            <?php endif; ?>
+            <p>Prix TTC : <?= formatPrice(discountedPrice($item["price"], $item["discount"])) ?></p>
+            <p>Prix HT : <?= priceExcludingTVA(discountedPrice($item["price"], $item["discount"])) ?></p>
+            <div class="containerImgItem">
+                <img class="imgItem" src=<?= $item["picture_url"] ?> alt="image ecouteur" />
+            </div>
+
+            <label for=<?= $item["name"] ?>>Quantité :</label>
+            <input type="number" id="quantite-<?= strtolower($item['name'])?>" name="quantite[<?= strtolower($item['name'])?>]" value="0" min="0" max="100" />
+            <input type="hidden" id="price-<?= strtolower($item['name'])?>" name="price[<?= strtolower($item['name'])?>]" value=<?= $item["price"] ?>/>
+            <input type="hidden" id="price-<?= strtolower($item['name'])?>" name="discount[<?= strtolower($item['name'])?>]" value=<?= $item["discount"] ?>/>
+            <button type="submit" class="btnCommander">COMMANDER</button>
+
     </div>
-</div>
 <?php
 }
 ?>
