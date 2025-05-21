@@ -62,4 +62,5 @@ main{
 
 .solde{
     color: red;
+    text-decoration: line-through;
 }

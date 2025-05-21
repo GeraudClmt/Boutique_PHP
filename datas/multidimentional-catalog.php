@@ -34,7 +34,7 @@ foreach($products as $item){
 <div class="item">
     <h3><?= $item["name"] ?></h1>
     <?php if($item["discount"]) :?>
-        <h3 class="solde">Solde</h3>
+        <p class="solde"><?= formatPrice($item["price"]) ?> TTC</p>
     <?php endif; ?>
     <p>Prix TTC : <?= formatPrice(discountedPrice($item["price"], $item["discount"])) ?></p>
     <p>Prix HT : <?= priceExcludingTVA(discountedPrice($item["price"], $item["discount"])) ?></p>

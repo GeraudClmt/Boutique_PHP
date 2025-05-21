@@ -29,7 +29,7 @@ $gourde = [
 <div class="item">
     <h3><?php echo $corde["name"] ?></h1>
     <?php if($corde["discount"]) :?>
-        <h3 class="solde">Solde</h3>
+        <p class="solde"><?= formatPrice($corde["price"]) ?> TTC</p>
     <?php endif; ?>
     <p>Prix TTC : <?= formatPrice(discountedPrice($corde["price"], $corde["discount"])) ?></p>
     <p>Prix HT : <?= priceExcludingTVA(discountedPrice($corde["price"], $corde["discount"])) ?></p>
@@ -40,7 +40,7 @@ $gourde = [
 <div class="item">
     <h3><?php echo $casque["name"] ?></h1>
     <?php if($casque["discount"]) :?>
-        <h3 class="solde">Solde</h3>
+        <p class="solde"><?= formatPrice($casque["price"]) ?> TTC</p>
     <?php endif; ?>
     <p>Prix TTC : <?= formatPrice(discountedPrice($casque["price"], $casque["discount"])) ?></p>
     <p>Prix HT : <?= priceExcludingTVA(discountedPrice($casque["price"], $casque["discount"])) ?></p>
@@ -51,7 +51,7 @@ $gourde = [
 <div class="item">
     <h3><?php echo $gourde["name"] ?></h1>
     <?php if($gourde["discount"]) :?>
-        <h3 class="solde">Solde</h3>
+        <p class="solde"><?= formatPrice($gourde["price"]) ?> TTC</p>
     <?php endif; ?>
     <p>Prix TTC : <?= formatPrice(discountedPrice($gourde["price"], $gourde["discount"])) ?></p>
     <p>Prix HT : <?= priceExcludingTVA(discountedPrice($gourde["price"], $gourde["discount"])) ?></p>
