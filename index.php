@@ -1,9 +1,7 @@
 <?php 
-    require_once 'header.php';
     require_once './datas/head.php';
     echo head("Acceuil", "Site pour acheter du materiels électronique en ligne.");
 ?>
-
 <body >
     <?php require_once 'header.php' ?>
     <main>
