@@ -48,6 +48,7 @@ foreach ($products as $item) {
             <input type="number" id="quantite-<?= strtolower($item['name'])?>" name="quantite[<?= strtolower($item['name'])?>]" value="0" min="0" max="100" />
             <input type="hidden" id="price-<?= strtolower($item['name'])?>" name="price[<?= strtolower($item['name'])?>]" value=<?= $item["price"] ?>/>
             <input type="hidden" id="price-<?= strtolower($item['name'])?>" name="discount[<?= strtolower($item['name'])?>]" value=<?= $item["discount"] ?>/>
+            <input type="hidden" id="price-<?= strtolower($item['name'])?>" name="weight[<?= strtolower($item['name'])?>]" value=<?= $item["weight"] ?>/>
             <button type="submit" class="btnCommander">COMMANDER</button>
 
     </div>
