@@ -1,42 +1,59 @@
 <?php
+session_start();
 require_once 'datas/my-functions.php';
 
 $listeProduitCommande = [];
-$prixTotal = 0;
-$poidTotal = 0;
+$_SESSION["prixTotal"] = 0;
+$_SESSION["poidTotal"] = 0;
 
-$listePrice = $_POST["price"];
-$listeQuantite = $_POST["quantite"];
-$listeDiscount = $_POST["discount"];
-$listePoid = $_POST["weight"];
-$livreur = $_POST["livreur"];
-$data = $_POST;
-
-
-if($livreur == null){
-    $livreur = "dhl";
+if (!isset($_SESSION["price"], $_SESSION["quantite"], $_SESSION["weight"], $_SESSION["discount"])) {
+    $_SESSION["price"] = [];
+    $_SESSION["quantite"] = [];
+    $_SESSION["discount"] = [];
+    $_SESSION["weight"] = [];
+}
+if (isset($_POST["livreur"])) {
+    $_SESSION["livreur"] = $_POST["livreur"];
+} else {
+    $_SESSION["livreur"] = "dhl";
 }
 
 
-foreach (array_keys($listePrice) as $item) {
-    if (isset($listeQuantite[$item]) && $listeQuantite[$item] != "0") {
-        //echo "Element : " . $item . " Quantité : " . $listeQuantite[$item] . " prix : " . $listePrice[$item];
+if (!empty($_POST["price"]) && !empty($_POST["quantite"]) && !empty($_POST["discount"]) && !empty($_POST["weight"])) {
+    foreach ($_POST["quantite"] as $produit => $quantite) {
+        $_SESSION["quantite"][$produit] = ($_SESSION["quantite"][$produit] ?? 0) + (int)$quantite;
+
+        $_SESSION["price"][$produit] = $_POST["price"][$produit];
+        $_SESSION["discount"][$produit] = $_POST["discount"][$produit];
+        $_SESSION["weight"][$produit] = $_POST["weight"][$produit];
+    }
+
+}
+
+$data = $_SESSION;
+
+
+foreach (array_keys($_SESSION["price"]) as $item) {
+    if (isset($_SESSION["quantite"][$item]) && $_SESSION["quantite"][$item] != "0") {
+        //echo "Element : " . $item . " Quantité : " . $_SESSION["quantite"][$item] . " prix : " . $_SESSION["price"][$item];
 
         $listeProduitCommande[$item] = [
             "name" => $item,
-            "price" => $listePrice[$item],
-            "quantite" => $listeQuantite[$item],
-            "prixTotal" => (int) $listePrice[$item] * (int) $listeQuantite[$item],
-            "discount" => (int) $listeDiscount[$item],
-            "weight" => (int)$listePoid[$item]
+            "price" => $_SESSION["price"][$item],
+            "quantite" => $_SESSION["quantite"][$item],
+            "prixTotal" => (int) $_SESSION["price"][$item] * (int) $_SESSION["quantite"][$item],
+            "discount" => (int) $_SESSION["discount"][$item],
+            "weight" => (int)$_SESSION["weight"][$item]
         ];
     }
 }
 
 foreach (array_keys($listeProduitCommande) as $i) {
-    $prixTotal = $prixTotal + $listeProduitCommande[$i]["prixTotal"];
-    $poidTotal = $poidTotal + ($listeProduitCommande[$i]["weight"] * $listeProduitCommande[$i]["quantite"]);
+    $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + $listeProduitCommande[$i]["prixTotal"];
+    $_SESSION["poidTotal"] = $_SESSION["poidTotal"] + ($listeProduitCommande[$i]["weight"] * $listeProduitCommande[$i]["quantite"]);
 }
+
+//session_destroy();
 
 
 ?>
@@ -77,23 +94,14 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
             ?>
 
             <form action="cart.php" method="post">
-                <?php foreach ($data as $key => $value): ?>
-                    <?php if (is_array($value)) : ?>
-                        <?php foreach ($value as $subKey => $subVal): ?>
-                            <input type="hidden" name="<?= $key ?>[<?= $subKey ?>]" value="<?= $subVal ?>"/>
-                        <?php endforeach; ?>
-                    <?php else : ?>
-                        <input type="hidden" name="<?= $key ?>" value="<?= $value?>" />
-                    <?php endif; ?>
-                <?php endforeach; ?>
                 <fieldset>
                     <legend>Choix du livreur:</legend>
                     <div>
-                        <input type="radio" id="dhl" name="livreur" value="dhl" <?= $livreur == "dhl" ? "checked" : "" ?> />
+                        <input type="radio" id="dhl" name="livreur" value="dhl" <?= $_SESSION["livreur"] == "dhl" ? "checked" : "" ?> />
                         <label for="dhl">DHL</label>
                     </div>
                     <div>
-                        <input type="radio" id="dpd" name="livreur" value="dpd" <?= $livreur == "dpd" ? "checked" : "" ?>/>
+                        <input type="radio" id="dpd" name="livreur" value="dpd" <?= $_SESSION["livreur"] == "dpd" ? "checked" : "" ?> />
                         <label for="dpd">DPD</label>
                     </div>
                 </fieldset>
@@ -101,10 +109,10 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
             </form>
 
             <div class="prixTotal">
-                <p>HT : <?= priceExcludingTVA($prixTotal) ?></p>
-                <p>TVA : <?= formatPrice($prixTotal * 0.2) ?> </p>
-                <p>Livraison : <?=formatPrice(prixLivraison($livreur, $poidTotal, $prixTotal )) ?> </p>
-                <p>Total : <?= formatPrice($prixTotal) ?></p>
+                <p>HT : <?= priceExcludingTVA($_SESSION["prixTotal"]) ?></p>
+                <p>TVA : <?= formatPrice($_SESSION["prixTotal"] * 0.2) ?> </p>
+                <p>Livraison : <?= formatPrice(prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"])) ?> </p>
+                <p>Total : <?= formatPrice($_SESSION["prixTotal"] + prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"])) ?></p>
             </div>
         </div>
     </main>
