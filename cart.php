@@ -7,6 +7,7 @@ $listePrice = $_POST["price"];
 $listeQuantite = $_POST["quantite"];
 $listeDiscount = $_POST["discount"];
 
+$data = $_POST;
 
 foreach (array_keys($listePrice) as $item) {
     if (isset($listeQuantite[$item]) && $listeQuantite[$item] != "0") {
@@ -19,7 +20,6 @@ foreach (array_keys($listePrice) as $item) {
             "prixTotal" => (int) $listePrice[$item] * (int) $listeQuantite[$item],
             "discount" => (int) $listeDiscount[$item]
         ];
-
     }
 }
 
@@ -39,7 +39,7 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
 <body>
     <?php require_once 'header.php' ?>
     <main class="mainPanier">
-        <div class="containerPanier">
+        <form class="containerPanier">
             <div class="elementPanier">
                 <h4>Produit</h4>
                 <h4>Prix</h4>
@@ -48,29 +48,38 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
             </div>
             <?php foreach (array_keys($listeProduitCommande) as $produit) { ?>
                 <div class="elementPanier">
-                    <p><?= $listeProduitCommande[$produit]["name"] ?></p>
+                    <input type="text" value=<?= $listeProduitCommande[$produit]["name"]?> readonly="readonly"/>
 
-                    <?php if($listeProduitCommande[$produit]["discount"] > 0 ) : ?>
+                    <?php if ($listeProduitCommande[$produit]["discount"] > 0) : ?>
                         <div>
-                            <p class="solde"><?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?></p>
-                            <p><?= formatPrice(discountedPrice((int)$listeProduitCommande[$produit]["price"], (int)$listeProduitCommande[$produit]["discount"])) ?></p>
+                            <input class="solde" type="text" value=<?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?> readonly="readonly"/>
+                            <input type="text" value=<?= formatPrice(discountedPrice((int)$listeProduitCommande[$produit]["price"], (int)$listeProduitCommande[$produit]["discount"])) ?> readonly="readonly"/>
                         </div>
-                        <p><?= $listeProduitCommande[$produit]["quantite"] ?></p>
-                        <p><?= formatPrice(discountedPrice((int) $listeProduitCommande[$produit]["prixTotal"], (int)$listeProduitCommande[$produit]["discount"])) ?></p>  
+                        <input type="text" value=<?= $listeProduitCommande[$produit]["quantite"] ?> readonly="readonly"/>
+                        <input type="text" value=<?= formatPrice(discountedPrice((int) $listeProduitCommande[$produit]["prixTotal"], (int)$listeProduitCommande[$produit]["discount"])) ?> readonly="readonly"/>
                     <?php else : ?>
-                        <p><?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?></p>
-                        <p><?= $listeProduitCommande[$produit]["quantite"] ?></p>
-                        <p><?= formatPrice((int) $listeProduitCommande[$produit]["prixTotal"]) ?></p>
+                        <input type="text" value=<?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?> readonly="readonly"/>
+                        <input type="text" value=<?= $listeProduitCommande[$produit]["quantite"] ?> readonly="readonly"/>
+                        <input type="text" value=<?= formatPrice((int) $listeProduitCommande[$produit]["prixTotal"]) ?> readonly="readonly"/>
                     <?php endif ?>
                 </div>
             <?php }
             ?>
             <div class="prixTotal">
-                <p>HT : <?= priceExcludingTVA($prixTotal) ?></p>
-                <p>TVA : <?= formatPrice($prixTotal * 0.2) ?> </p>
-                <p>Total : <?= formatPrice($prixTotal) ?></p>
+                <div class="totalTVA_HT">
+                    <label for="textPriceTVA">HT :</label>
+                    <input type="text" id="textPriceTVA" value=<?= priceExcludingTVA($prixTotal) ?> readonly="readonly"/>
+                </div>
+                <div class="totalTVA_HT">
+                    <label for="textTVA">TVA :</label>
+                    <input type="text" id="textTVA" value=<?= formatPrice($prixTotal * 0.2) ?> readonly="readonly"/>
+                </div>
+                <div class="totalTVA_HT">
+                    <label for="textPriceTotal">Total :</label>
+                    <input type="text" id="textPriceTotal" value=<?= formatPrice($prixTotal) ?> eadonly="readonly"/>
+                </div>
             </div>
-        </div>
+        </form>
     </main>
     <?php require_once 'footer.php' ?>
 </body>

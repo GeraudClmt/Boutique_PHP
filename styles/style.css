@@ -77,6 +77,10 @@ main{
     justify-content: space-around;
     border-bottom: 2px solid black;
 }
+.elementPanier > *{
+    width: 10em;
+    text-align: center;
+}
 .elementPanier p{
     width: 2em;
     text-align: center;
@@ -91,4 +95,13 @@ main{
     width: 10em;
     padding-right: 3em;
     border-bottom: 2px solid black;
+}
+.containerPanier input{
+    border: none;
+    font-size: 1.1em;
+    text-align: center;
+}
+.totalTVA_HT{
+    border-bottom: 2px solid black;
+    width: 11em;
 }
