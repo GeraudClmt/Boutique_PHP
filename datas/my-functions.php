@@ -20,7 +20,7 @@ function prixLivraison(string $livreur, int $poidTotal, float $prixTotal) : floa
     switch ($livreur){
         case "dhl":
             if($poidTotal >= 0 && $poidTotal <= 500){
-                $prixLivraison = 5;
+                $prixLivraison = 500;
             }elseif($poidTotal > 500 && $poidTotal <= 2000){
                 $prixLivraison = $prixTotal * 0.1;
             }else{
@@ -29,7 +29,7 @@ function prixLivraison(string $livreur, int $poidTotal, float $prixTotal) : floa
         break;
         case "dpd":
             if($poidTotal >= 0 && $poidTotal <= 500){
-                $prixLivraison = 6;
+                $prixLivraison = 600;
             }elseif($poidTotal > 500 && $poidTotal <= 2000){
                 $prixLivraison = $prixTotal * 0.13;
             }else{
