@@ -6,37 +6,49 @@ $listeProduitCommande = [];
 $_SESSION["prixTotal"] = 0;
 $_SESSION["poidTotal"] = 0;
 
+//Si les variables n'existent pas je les crées vides
 if (!isset($_SESSION["price"], $_SESSION["quantite"], $_SESSION["weight"], $_SESSION["discount"])) {
     $_SESSION["price"] = [];
     $_SESSION["quantite"] = [];
     $_SESSION["discount"] = [];
     $_SESSION["weight"] = [];
 }
-if (isset($_POST["livreur"])) {
-    $_SESSION["livreur"] = $_POST["livreur"];
+//Si il y a eu une requete get avec livreur, on met cette valeur dans session sinon par defaut "dhl"
+if (isset($_GET["livreur"])) {
+    $_SESSION["livreur"] = $_GET["livreur"];
 } else {
     $_SESSION["livreur"] = "dhl";
 }
 
-
-if (!empty($_POST["price"]) && !empty($_POST["quantite"]) && !empty($_POST["discount"]) && !empty($_POST["weight"])) {
-    foreach ($_POST["quantite"] as $produit => $quantite) {
-        $_SESSION["quantite"][$produit] = ($_SESSION["quantite"][$produit] ?? 0) + (int)$quantite;
-
-        $_SESSION["price"][$produit] = $_POST["price"][$produit];
-        $_SESSION["discount"][$produit] = $_POST["discount"][$produit];
-        $_SESSION["weight"][$produit] = $_POST["weight"][$produit];
-    }
-
+//Si requete get avec "Vider le panier" appel fonction viderLePanier
+if ($_GET["viderPanier"] == "Vider le panier") {
+    viderLePanier();
 }
 
-$data = $_SESSION;
+//Si on a une requete post et que les variables sont pas null
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (!empty($_POST["price"]) && !empty($_POST["quantite"]) && !empty($_POST["discount"]) && !empty($_POST["weight"])) {
+        foreach ($_POST["quantite"] as $produit => $quantite) {
+            if (isset($_SESSION["quantite"][$produit]) &&  $_SESSION["quantite"][$produit] != 0) {
+                $_SESSION["quantite"][$produit] = $_SESSION["quantite"][$produit] + (int)$quantite;
+            } else {
+                $_SESSION["quantite"][$produit] = 0 + (int)$quantite;
+            }
 
+            $_SESSION["price"][$produit] = $_POST["price"][$produit];
+            $_SESSION["discount"][$produit] = $_POST["discount"][$produit];
+            $_SESSION["weight"][$produit] = $_POST["weight"][$produit];
+        }
+    }
+    //Recharge la parge cart.php
+    header(("Location: cart.php"));
+    //Arrete le script pour pas recharger le reste
+    exit();
+}
 
-foreach (array_keys($_SESSION["price"]) as $item) {
+//Stockage de tous session dans un tableau pour l'exploitation
+foreach (array_keys($_SESSION["quantite"]) as $item) {
     if (isset($_SESSION["quantite"][$item]) && $_SESSION["quantite"][$item] != "0") {
-        //echo "Element : " . $item . " Quantité : " . $_SESSION["quantite"][$item] . " prix : " . $_SESSION["price"][$item];
-
         $listeProduitCommande[$item] = [
             "name" => $item,
             "price" => $_SESSION["price"][$item],
@@ -48,15 +60,13 @@ foreach (array_keys($_SESSION["price"]) as $item) {
     }
 }
 
+//Calcul des prix total et poids
 foreach (array_keys($listeProduitCommande) as $i) {
     $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + $listeProduitCommande[$i]["prixTotal"];
     $_SESSION["poidTotal"] = $_SESSION["poidTotal"] + ($listeProduitCommande[$i]["weight"] * $listeProduitCommande[$i]["quantite"]);
 }
-
-//session_destroy();
-
-
 ?>
+
 
 
 <?php require_once 'datas/head.php';
@@ -76,13 +86,13 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
             <?php foreach (array_keys($listeProduitCommande) as $produit) { ?>
                 <div class="elementPanier">
                     <p><?= $listeProduitCommande[$produit]["name"] ?></p>
-
                     <?php if ($listeProduitCommande[$produit]["discount"] > 0) : ?>
                         <div>
                             <p class="solde"><?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?></p>
                             <p><?= formatPrice(discountedPrice((int)$listeProduitCommande[$produit]["price"], (int)$listeProduitCommande[$produit]["discount"])) ?></p>
                         </div>
                         <p><?= $listeProduitCommande[$produit]["quantite"] ?></p>
+
                         <p><?= formatPrice(discountedPrice((int) $listeProduitCommande[$produit]["prixTotal"], (int)$listeProduitCommande[$produit]["discount"])) ?></p>
                     <?php else : ?>
                         <p><?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?></p>
@@ -92,8 +102,7 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                 </div>
             <?php }
             ?>
-
-            <form action="cart.php" method="post">
+            <form action="cart.php" method="get">
                 <fieldset>
                     <legend>Choix du livreur:</legend>
                     <div>
@@ -104,8 +113,9 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                         <input type="radio" id="dpd" name="livreur" value="dpd" <?= $_SESSION["livreur"] == "dpd" ? "checked" : "" ?> />
                         <label for="dpd">DPD</label>
                     </div>
+                    <button class="btnRecalculerLivreur" type="submit">Recalculer avec le bon livreur</button>
                 </fieldset>
-                <button type="submit">Recalculer</button>
+                <input class="btnRecalculerLivreur" type="submit" name="viderPanier" value="Vider le panier" />
             </form>
 
             <div class="prixTotal">
