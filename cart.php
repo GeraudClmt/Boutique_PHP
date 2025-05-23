@@ -15,7 +15,7 @@ if (!isset($_SESSION["price"], $_SESSION["quantite"], $_SESSION["weight"], $_SES
 }
 //Si il y a eu une requete get avec livreur, on met cette valeur dans session sinon par defaut "dhl"
 if (isset($_GET["livreur"])) {
-    $_SESSION["livreur"] = $_GET["livreur"];
+    $_SESSION["livreur"] = htmlspecialchars($_GET["livreur"]);
 } else {
     $_SESSION["livreur"] = "dhl";
 }
@@ -28,7 +28,12 @@ if ($_GET["viderPanier"] == "Vider le panier") {
 //Si requete get avec changementQuantite on change la quantité de session
 if(isset($_GET["changementQuantite"])){
     foreach($_GET["changementQuantite"] as $produit => $quantite){
-        $_SESSION["quantite"][$produit] = $quantite;
+        if(is_numeric($quantite)){
+            $_SESSION["quantite"][$produit] = $quantite;
+        }else{
+            echo "Erreur type de quantité";
+        }
+        
     }
 }
 
