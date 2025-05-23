@@ -40,4 +40,11 @@ function prixLivraison(string $livreur, int $poidTotal, float $prixTotal) : floa
 
     return $prixLivraison;
 }
+
+function viderLePanier(){
+    $_SESSION["price"] = [];
+    $_SESSION["quantite"] = [];
+    $_SESSION["discount"] = [];
+    $_SESSION["weight"] = [];
+}
 ?>

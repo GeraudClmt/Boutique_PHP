@@ -92,3 +92,16 @@ main{
     padding-right: 3em;
     border-bottom: 2px solid black;
 }
+
+.btnRecalculerLivreur{
+    border: none;
+    font-size: medium;
+    background-color: black;
+    color: white;
+    border-radius: 12px;
+    padding: 0.4em;
+    margin: 0.5em;
+    
+}
+
+
