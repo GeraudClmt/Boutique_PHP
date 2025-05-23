@@ -25,6 +25,13 @@ if ($_GET["viderPanier"] == "Vider le panier") {
     viderLePanier();
 }
 
+//Si requete get avec changementQuantite on change la quantité de session
+if(isset($_GET["changementQuantite"])){
+    foreach($_GET["changementQuantite"] as $produit => $quantite){
+        $_SESSION["quantite"][$produit] = $quantite;
+    }
+}
+
 //Si on a une requete post et que les variables sont pas null
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!empty($_POST["price"]) && !empty($_POST["quantite"]) && !empty($_POST["discount"]) && !empty($_POST["weight"])) {
@@ -83,27 +90,29 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                 <h4>Quantité</h4>
                 <h4>Total</h4>
             </div>
-            <?php foreach (array_keys($listeProduitCommande) as $produit) { ?>
-                <div class="elementPanier">
-                    <p><?= $listeProduitCommande[$produit]["name"] ?></p>
-                    <?php if ($listeProduitCommande[$produit]["discount"] > 0) : ?>
-                        <div>
-                            <p class="solde"><?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?></p>
-                            <p><?= formatPrice(discountedPrice((int)$listeProduitCommande[$produit]["price"], (int)$listeProduitCommande[$produit]["discount"])) ?></p>
-                        </div>
-                        <p><?= $listeProduitCommande[$produit]["quantite"] ?></p>
-
-                        <p><?= formatPrice(discountedPrice((int) $listeProduitCommande[$produit]["prixTotal"], (int)$listeProduitCommande[$produit]["discount"])) ?></p>
-                    <?php else : ?>
-                        <p><?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?></p>
-                        <p><?= $listeProduitCommande[$produit]["quantite"] ?></p>
-                        <p><?= formatPrice((int) $listeProduitCommande[$produit]["prixTotal"]) ?></p>
-                    <?php endif ?>
-                </div>
-            <?php }
-            ?>
             <form action="cart.php" method="get">
-                <fieldset>
+                <?php foreach (array_keys($listeProduitCommande) as $produit) { ?>
+                    <div class="elementPanier">
+                        <p><?= $listeProduitCommande[$produit]["name"] ?></p>
+                        <?php if ($listeProduitCommande[$produit]["discount"] > 0) : ?>
+                            <div>
+                                <p class="solde"><?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?></p>
+                                <p><?= formatPrice(discountedPrice((int)$listeProduitCommande[$produit]["price"], (int)$listeProduitCommande[$produit]["discount"])) ?></p>
+                            </div>
+                            <input class="incrementeurPanier" type="number" name="changementQuantite[<?= $produit ?>]" value=<?= $listeProduitCommande[$produit]["quantite"] ?> min="0" max="100" />
+                            <p><?= formatPrice(discountedPrice((int) $listeProduitCommande[$produit]["prixTotal"], (int)$listeProduitCommande[$produit]["discount"])) ?> TTC</p>
+                        <?php else : ?>
+                            <p><?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?></p>
+                            <input class="incrementeurPanier" type="number" name="changementQuantite[<?= $produit ?>]" value=<?= $listeProduitCommande[$produit]["quantite"] ?> min="0" max="100" />
+                            <p><?= formatPrice((int) $listeProduitCommande[$produit]["prixTotal"]) ?> TTC</p>
+                        <?php endif ?>
+                    </div>
+                <?php }
+                ?>
+                <button class="btnRecalculerLivreur" type="submit">Recalculer avec les quantiées</button>
+            </form>
+            <form  action="cart.php" method="get">
+                <fieldset class="containerChoixLivreurs">
                     <legend>Choix du livreur:</legend>
                     <div>
                         <input type="radio" id="dhl" name="livreur" value="dhl" <?= $_SESSION["livreur"] == "dhl" ? "checked" : "" ?> />
@@ -122,7 +131,7 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                 <p>HT : <?= priceExcludingTVA($_SESSION["prixTotal"]) ?></p>
                 <p>TVA : <?= formatPrice($_SESSION["prixTotal"] * 0.2) ?> </p>
                 <p>Livraison : <?= formatPrice(prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"])) ?> </p>
-                <p>Total : <?= formatPrice($_SESSION["prixTotal"] + prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"])) ?></p>
+                <p>Total TTC : <?= formatPrice($_SESSION["prixTotal"] + prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"])) ?></p>
             </div>
         </div>
     </main>

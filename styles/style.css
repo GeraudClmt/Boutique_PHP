@@ -73,12 +73,14 @@ main{
     justify-content: center;
 }
 .elementPanier{
-    display: flex;
-    justify-content: space-around;
     border-bottom: 2px solid black;
+    place-items: center;
+    display: grid;
+    grid-template-columns: repeat(4, 17em);
+    grid-template-rows: 1fr;
+    
 }
 .elementPanier p{
-    width: 2em;
     text-align: center;
 }
 .prixTotal{
@@ -104,4 +106,21 @@ main{
     
 }
 
+.incrementeurPanier{
+    border: none;
+    font-size: medium;
+    height: 2em;
+}
 
+.containerChoixLivreurs{
+    display: flex;
+    justify-content: space-around;
+}
+
+@media screen and (max-width : 1000px) {
+    .elementPanier{
+        display: flex;
+        flex-direction: column;
+    }
+    
+}
