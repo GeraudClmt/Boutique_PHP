@@ -69,7 +69,7 @@ foreach ($products as $item) {
             <div class="choixQuantite">
             <label for=<?= $item["name"] ?>>Quantité :</label>
             <input type="number" id="quantite-<?= strtolower($item['name']) ?>" name="quantite[<?= strtolower($item['name']) ?>]" value="0" min="0" max="100" />
-            <button type="submit" class="btnCommander">COMMANDER</button>
+            <button type="submit" class="btn btn-success">COMMANDER</button>
             </div>
             <input type="hidden" id="price-<?= strtolower($item['name']) ?>" name="price[<?= strtolower($item['name']) ?>]" value=<?= $item["price"] ?> />
             <input type="hidden" id="price-<?= strtolower($item['name']) ?>" name="discount[<?= strtolower($item['name']) ?>]" value=<?= $item["discount"] ?> />

@@ -114,7 +114,7 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                     </div>
                 <?php }
                 ?>
-                <button class="btnRecalculerLivreur" type="submit">Recalculer avec les quantiées</button>
+                <button class="m-3 btn btn-outline-success" type="submit">Recalculer avec les quantiées</button>
             </form>
             <form  action="cart.php" method="get">
                 <fieldset class="containerChoixLivreurs">
@@ -127,9 +127,9 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                         <input type="radio" id="dpd" name="livreur" value="dpd" <?= $_SESSION["livreur"] == "dpd" ? "checked" : "" ?> />
                         <label for="dpd">DPD</label>
                     </div>
-                    <button class="btnRecalculerLivreur" type="submit">Recalculer avec le bon livreur</button>
+                    <button class="btn btn-outline-success" type="submit">Recalculer avec le bon livreur</button>
                 </fieldset>
-                <input class="btnRecalculerLivreur" type="submit" name="viderPanier" value="Vider le panier" />
+                <input class="btn btn-outline-success" type="submit" name="viderPanier" value="Vider le panier" />
             </form>
 
             <div class="prixTotal">

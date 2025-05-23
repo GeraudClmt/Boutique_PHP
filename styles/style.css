@@ -33,7 +33,6 @@ main{
     border-radius: 15px;
     border: solid 1px black;
     box-shadow: 10px 5px 5px black;
-    height: 20em;
     width: 20em;
     margin: 2em;
     padding: 1em;
@@ -116,7 +115,9 @@ main{
     display: flex;
     justify-content: space-around;
 }
-
+.blocText{
+    width: 30em;
+}
 @media screen and (max-width : 1000px) {
     .elementPanier{
         display: flex;
