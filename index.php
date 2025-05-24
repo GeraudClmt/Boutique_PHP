@@ -17,13 +17,13 @@ echo head("Accueil", "Site pour acheter du materiels électronique en ligne.");
                     De la balade familiale aux expéditions les plus engagées, La boutique de Géro accompagne tous ceux qui vivent la nature avec passion.</p>
             </div>
             <div class="col-6">
-                <img class="img-fluid" src="https://static.vecteezy.com/ti/vecteur-libre/p1/50808764-une-dessin-de-une-montagne-avec-une-bleu-ligne-vectoriel.jpg" alt="photo montagne" />
+                <img class="img-fluid rounded shadow" src="https://static.vecteezy.com/ti/vecteur-libre/p1/50808764-une-dessin-de-une-montagne-avec-une-bleu-ligne-vectoriel.jpg" alt="photo montagne" />
             </div>
         </div>
 
         <div class="row d-flex container-fluid justify-content-around mt-5">
             <div class="col-3">
-                <img class="img-fluid" src="https://previews.123rf.com/images/lhfgraphics/lhfgraphics1112/lhfgraphics111200225/11670373-doodle-mat%C3%A9riel-d-escalade-de-montagne-de-style-y-compris-le-c%C3%A2ble-cueillir-et-un-mousqueton.jpg" alt="photo montagne" />
+                <img class="img-fluid rounded shadow" src="https://previews.123rf.com/images/lhfgraphics/lhfgraphics1112/lhfgraphics111200225/11670373-doodle-mat%C3%A9riel-d-escalade-de-montagne-de-style-y-compris-le-c%C3%A2ble-cueillir-et-un-mousqueton.jpg" alt="photo montagne" />
             </div>
             <div class=" col-6 blocText">
                 <h3 class="fs-4">Depuis près de 40 ans, La boutique de Géro s’impose comme une référence incontournable dans le monde de l’équipement outdoor professionnel.</h3>

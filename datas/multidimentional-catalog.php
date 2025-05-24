@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once 'header.php';
 require_once 'my-functions.php';
 
@@ -54,7 +53,7 @@ $products = [
 <?php
 foreach ($products as $item) {
 ?>
-    <div class="item">
+    <div class="item rounded shadow">
         <h3><?= $item["name"] ?></h1>
             <?php if ($item["discount"]) : ?>
                 <p class="solde"><?= formatPrice($item["price"]) ?> TTC 🔥</p>
