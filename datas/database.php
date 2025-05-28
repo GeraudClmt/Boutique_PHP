@@ -55,12 +55,6 @@ function totalOrdersOfTheDay(): array
 
 function addOrder(int $total, int $shipping_cost, int $total_weight, int $customer_id, int $carrier_id )
 {
-    // echo $total;
-    // echo $shipping_cost;
-    // echo $total_weight;
-    // echo $customer_id;
-    // echo $carrier_id ;
-
     $sqlQuery = 'INSERT INTO orders (total, shipping_cost, total_weight, customer_id, carrier_id) 
                  VALUES (:total, :shipping_cost, :total_weight, :customer_id, :carrier_id)';
 

@@ -30,6 +30,11 @@ if (isset($_GET["livreur"])) {
     $_SESSION["livreur"] = "dhl";
 }
 
+//Si requete get avec "Vider le panier" appel fonction viderLePanier
+if ($_GET["viderPanier"] == "Vider le panier") {
+    viderLePanier();
+}
+
 
 
 
@@ -92,15 +97,21 @@ foreach (array_keys($listeProduitCommande) as $i) {
     discountedPrice((int) $listeProduitCommande[$produit]["prixTotal"], (int)$listeProduitCommande[$produit]["discount"]);
 }
 
-//Si requete get avec "Vider le panier" appel fonction viderLePanier
-if ($_GET["viderPanier"] == "Vider le panier") {
-    viderLePanier();
-} elseif ($_GET["commander"] == "true") {
-    addOrder((int)$_SESSION["prixTotal"], (int)prixLivraison(
+if ($_GET["commander"] == "true") {
+    
+    addOrder(
+        (int)$_SESSION["prixTotal"] + prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"]),
+        (int)prixLivraison(
         $_SESSION["livreur"],
         $_SESSION["poidTotal"],
-        $_SESSION["prixTotal"]
-    ), (int)$_SESSION["poidTotal"], 1, $_SESSION["numeroLivreur"]);
+        $_SESSION["prixTotal"]), 
+        (int)$_SESSION["poidTotal"], 
+        1, 
+        $_SESSION["numeroLivreur"]);
+
+    viderLePanier();
+    header('Location: cart.php');
+    exit();
 }
 ?>
 
@@ -158,13 +169,14 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
             </form>
 
             <div class="prixTotal">
+                <?php if($_SESSION["prixTotal"] > 0) : ?>
                 <p>HT : <?= priceExcludingTVA($_SESSION["prixTotal"]) ?></p>
                 <p>TVA : <?= formatPrice($_SESSION["prixTotal"] * 0.2) ?> </p>
                 <p>Livraison : <?= formatPrice(prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"])) ?> </p>
                 <p>Total TTC : <?= formatPrice($_SESSION["prixTotal"] + prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"])) ?></p>
-                            
+                <?php endif ?>
             </div>
-            <form action="cart.php" method="get" class="col d-flex justify-content-end m-4">
+            <form method="get" class="col d-flex justify-content-end m-4">
                 <input type="hidden" name="commander" value="true" />
                 <button class="btn btn-success" type="submit">Commander</button>
             </form>
