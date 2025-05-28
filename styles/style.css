@@ -41,8 +41,8 @@ main{
 }
 
 .imgItem{
-    height: 50%;
-    width: 40%;
+    height: 10em;
+    width: 10em;
     object-fit: cover;
     margin: auto;
 }

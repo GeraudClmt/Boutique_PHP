@@ -1,6 +1,6 @@
 <?php
 function formatPrice(float $centPrice) : string{
-    $price = number_format(($centPrice / 100), 2, ',', ' ') . '€';
+    $price = number_format($centPrice, 2, ',', ' ') . '€';
     return $price;
 }
 
@@ -19,8 +19,8 @@ function prixLivraison(string $livreur, int $poidTotal, float $prixTotal) : floa
     $prixLivraison = 0;
     switch ($livreur){
         case "dhl":
-            if($poidTotal >= 0 && $poidTotal <= 500){
-                $prixLivraison = 500;
+            if($poidTotal >= 0 && $poidTotal <= 5){
+                $prixLivraison = 5;
             }elseif($poidTotal > 500 && $poidTotal <= 2000){
                 $prixLivraison = $prixTotal * 0.1;
             }else{
@@ -29,7 +29,7 @@ function prixLivraison(string $livreur, int $poidTotal, float $prixTotal) : floa
         break;
         case "dpd":
             if($poidTotal >= 0 && $poidTotal <= 500){
-                $prixLivraison = 600;
+                $prixLivraison = 0;
             }elseif($poidTotal > 500 && $poidTotal <= 2000){
                 $prixLivraison = $prixTotal * 0.13;
             }else{
