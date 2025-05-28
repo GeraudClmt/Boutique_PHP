@@ -1,10 +1,15 @@
 <?php
 session_start();
 require_once 'datas/my-functions.php';
+require_once 'datas/database.php';
 
 $listeProduitCommande = [];
 $_SESSION["prixTotal"] = 0;
 $_SESSION["poidTotal"] = 0;
+if (!isset($_SESSION["numeroLivreur"])) {
+    $_SESSION["numeroLivreur"] = 1;
+}
+
 
 //Si les variables n'existent pas je les crées vides
 if (!isset($_SESSION["price"], $_SESSION["quantite"], $_SESSION["weight"], $_SESSION["discount"])) {
@@ -16,24 +21,26 @@ if (!isset($_SESSION["price"], $_SESSION["quantite"], $_SESSION["weight"], $_SES
 //Si il y a eu une requete get avec livreur, on met cette valeur dans session sinon par defaut "dhl"
 if (isset($_GET["livreur"])) {
     $_SESSION["livreur"] = htmlspecialchars($_GET["livreur"]);
+    if ($_SESSION["livreur"] == "dhl") {
+        $_SESSION["numeroLivreur"] = 1;
+    }else{
+        $_SESSION["numeroLivreur"] = 2;
+    }
 } else {
     $_SESSION["livreur"] = "dhl";
 }
 
-//Si requete get avec "Vider le panier" appel fonction viderLePanier
-if ($_GET["viderPanier"] == "Vider le panier") {
-    viderLePanier();
-}
+
+
 
 //Si requete get avec changementQuantite on change la quantité de session
-if(isset($_GET["changementQuantite"])){
-    foreach($_GET["changementQuantite"] as $produit => $quantite){
-        if(is_numeric($quantite)){
+if (isset($_GET["changementQuantite"])) {
+    foreach ($_GET["changementQuantite"] as $produit => $quantite) {
+        if (is_numeric($quantite)) {
             $_SESSION["quantite"][$produit] = $quantite;
-        }else{
+        } else {
             echo "Erreur type de quantité";
         }
-        
     }
 }
 
@@ -74,8 +81,26 @@ foreach (array_keys($_SESSION["quantite"]) as $item) {
 
 //Calcul des prix total et poids
 foreach (array_keys($listeProduitCommande) as $i) {
-    $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + $listeProduitCommande[$i]["prixTotal"];
+    if ($listeProduitCommande[$i]["discount"] > 0){
+        $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + discountedPrice((int)$listeProduitCommande[$i]["prixTotal"], (int)$listeProduitCommande[$i]["discount"]);
+    }else
+    {
+        $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + $listeProduitCommande[$i]["prixTotal"];
+    }
     $_SESSION["poidTotal"] = $_SESSION["poidTotal"] + ($listeProduitCommande[$i]["weight"] * $listeProduitCommande[$i]["quantite"]);
+
+    discountedPrice((int) $listeProduitCommande[$produit]["prixTotal"], (int)$listeProduitCommande[$produit]["discount"]);
+}
+
+//Si requete get avec "Vider le panier" appel fonction viderLePanier
+if ($_GET["viderPanier"] == "Vider le panier") {
+    viderLePanier();
+} elseif ($_GET["commander"] == "true") {
+    addOrder((int)$_SESSION["prixTotal"], (int)prixLivraison(
+        $_SESSION["livreur"],
+        $_SESSION["poidTotal"],
+        $_SESSION["prixTotal"]
+    ), (int)$_SESSION["poidTotal"], 1, $_SESSION["numeroLivreur"]);
 }
 ?>
 
@@ -116,7 +141,7 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                 ?>
                 <button class="m-3 btn btn-outline-success" type="submit">Recalculer avec les quantiées</button>
             </form>
-            <form  action="cart.php" method="get">
+            <form action="cart.php" method="get">
                 <fieldset class="containerChoixLivreurs">
                     <legend>Choix du livreur:</legend>
                     <div>
@@ -137,9 +162,19 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                 <p>TVA : <?= formatPrice($_SESSION["prixTotal"] * 0.2) ?> </p>
                 <p>Livraison : <?= formatPrice(prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"])) ?> </p>
                 <p>Total TTC : <?= formatPrice($_SESSION["prixTotal"] + prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"])) ?></p>
+                            
             </div>
+            <form action="cart.php" method="get" class="col d-flex justify-content-end m-4">
+                <input type="hidden" name="commander" value="true" />
+                <button class="btn btn-success" type="submit">Commander</button>
+            </form>
+
+
         </div>
+
+
     </main>
+
     <?php require_once 'footer.php' ?>
 </body>
 
