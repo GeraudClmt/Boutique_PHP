@@ -1,6 +1,7 @@
 <?php
 require_once './datas/head.php';
 require_once 'datas/database.php';
+require_once 'datas/my-functions.php';
 echo head("Accueil", "Site pour acheter du materiels électronique en ligne.");
 $totalVente = totalOrdersOfTheDay();
 ?>
@@ -8,7 +9,7 @@ $totalVente = totalOrdersOfTheDay();
 <body>
     <?php require_once 'header.php' ?>
     <main class="container-fluid p-5">
-        <h1>Cout total des ventes d'aujourd'hui : <?= $totalVente[0]['total'] ?> € 🔥🔥🔥</h1>
+        <h1>Cout total des ventes d'aujourd'hui : <?= formatPrice($totalVente[0]['total']) ?> 🔥🔥🔥</h1>
         <div class="row d-flex container-fluid justify-content-around mt-5">
             <div class=" col-6 blocText">
                 <h3 class="fs-4">Spécialiste de l’équipement outdoor depuis 1985, La boutique de Géro est une enseigne française indépendante, passionnée par la nature et l’aventure.</h3>
