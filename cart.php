@@ -115,12 +115,11 @@ if ($_GET["commander"] == "true") {
 
 //cancelOrder("103");
 
-// if ($_GET["orderId"] == 103){
-//     //echo "Annuler commande";
-//     cancelOrder();
-//     header('Location: cart.php');
-//     exit();
-// }
+if (!empty($_GET["orderId"])){
+    cancelOrder($_GET["orderId"]);
+    header('Location: cart.php');
+    exit();
+}
 
 $listLastOrder = listOrderUser(1);
 
