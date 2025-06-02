@@ -1,6 +1,7 @@
 <?php
 require_once './datas/head.php';
 echo head("Contact", "Contacter les fournisseurs.");
+echo phpinfo();
 ?>
 
 <body>
