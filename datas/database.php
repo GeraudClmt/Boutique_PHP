@@ -126,7 +126,7 @@ function cancelOrder(int $idOrder)
             "order_id" => $idOrder,
         ]);
     } catch (error) {
-        echo "Erreur premier";
+        echo "Erreur suppression order_product";
     }
 
     try {
@@ -136,6 +136,6 @@ function cancelOrder(int $idOrder)
             "id" => $idOrder,
         ]);
     } catch (error) {
-        echo "Erreur deuxime";
+        echo "Erreur suppression order";
     }
 }

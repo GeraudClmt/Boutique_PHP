@@ -203,7 +203,7 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                 foreach ($listLastOrder as $order) { ?>
                     <form action="cart.php" method="get" class="col-4 m-2 border border-success-subtle rounded p-2">
                         <h4>Numéro : <?= $order["id"] ?></h4>
-                        <h4>Prix total : <?= $order["total"] ?> €</h4>
+                        <h4>Prix total : <?= formatPrice($order["total"]) ?> </h4>
                         <input type="hidden" name="orderId" value="<?= $order["id"] ?>" />
                         <button type="submit" class="btn btn-danger">Annuler la commande</button>
                     </form>

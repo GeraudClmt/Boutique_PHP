@@ -8,8 +8,8 @@ $totalVente = totalOrdersOfTheDay();
 
 <body>
     <?php require_once 'header.php' ?>
-    <main class="container-fluid p-5">
-        <h1>Cout total des ventes d'aujourd'hui : <?= formatPrice($totalVente[0]['total']) ?> 🔥🔥🔥</h1>
+    <main class="container-fluid p-2">
+        <h1>Cout total des ventes d'aujourd'hui : <?= formatPrice((float) $totalVente[0]['total']) ?> 🔥🔥🔥</h1>
         <div class="row d-flex container-fluid justify-content-around mt-5">
             <div class=" col-6 blocText">
                 <h3 class="fs-4">Spécialiste de l’équipement outdoor depuis 1985, La boutique de Géro est une enseigne française indépendante, passionnée par la nature et l’aventure.</h3>
@@ -20,13 +20,13 @@ $totalVente = totalOrdersOfTheDay();
                     Chaque article est choisi avec soin pour garantir performance, confort et sécurité, quelles que soient les conditions.<br>
                     De la balade familiale aux expéditions les plus engagées, La boutique de Géro accompagne tous ceux qui vivent la nature avec passion.</p>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-xl-6 m-2">
                 <img class="img-fluid rounded shadow" src="https://static.vecteezy.com/ti/vecteur-libre/p1/50808764-une-dessin-de-une-montagne-avec-une-bleu-ligne-vectoriel.jpg" alt="photo montagne" />
             </div>
         </div>
 
-        <div class="row d-flex container-fluid justify-content-around mt-5">
-            <div class="col-3">
+        <div class="row d-flex container-fluid justify-content-around mt-5 flex-wrap-reverse">
+            <div class="col-12 col-xl-3 m-2">
                 <img class="img-fluid rounded shadow" src="https://previews.123rf.com/images/lhfgraphics/lhfgraphics1112/lhfgraphics111200225/11670373-doodle-mat%C3%A9riel-d-escalade-de-montagne-de-style-y-compris-le-c%C3%A2ble-cueillir-et-un-mousqueton.jpg" alt="photo montagne" />
             </div>
             <div class=" col-6 blocText">
