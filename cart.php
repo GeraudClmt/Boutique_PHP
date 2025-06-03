@@ -93,6 +93,7 @@ if (!empty($_GET["orderId"])) {
     exit();
 }
 
+//Liste des commande en fonction de id utilisateur
 $listLastOrder = listOrderUser(1);
 
 //recupération de la liste des livreur
@@ -116,8 +117,8 @@ if (isset($_GET["livreur"])) {
 //Click sur le boutton commander
 if ($_GET["commander"] == "true") {
     addOrder(
-        (float)$_SESSION["prixTotal"] + prixLivraison($listeCarriers, $_SESSION["numeroLivreur"]),
-        (float)prixLivraison($listeCarriers, $_SESSION["numeroLivreur"]),
+        (float)$_SESSION["prixTotal"] + prixLivraison($listeCarriers, $_SESSION["numeroLivreur"], $_SESSION["prixTotal"] ),
+        (float)prixLivraison($listeCarriers, $_SESSION["numeroLivreur"], $_SESSION["prixTotal"]),
         (int)$_SESSION["poidTotal"],
         1,
         $_SESSION["numeroLivreur"]
@@ -191,8 +192,8 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
 
                     <p>HT : <?= priceExcludingTVA($_SESSION["prixTotal"]) ?></p>
                     <p>TVA : <?= formatPrice($_SESSION["prixTotal"] * 0.2) ?> </p>
-                    <p>Livraison : <?= formatPrice(prixLivraison($listeCarriers, $_SESSION["numeroLivreur"])) ?> </p>
-                    <p>Total TTC : <?= formatPrice($_SESSION["prixTotal"] + prixLivraison($listeCarriers, $_SESSION["numeroLivreur"])) ?></p>
+                    <p>Livraison : <?= formatPrice(prixLivraison($listeCarriers, $_SESSION["numeroLivreur"], $_SESSION["prixTotal"])) ?> </p>
+                    <p>Total TTC : <?= formatPrice($_SESSION["prixTotal"] + prixLivraison($listeCarriers, $_SESSION["numeroLivreur"], $_SESSION["prixTotal"])) ?></p>
 
                 </div>
                 <form method="get" class="col d-flex justify-content-end m-4">

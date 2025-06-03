@@ -15,14 +15,17 @@ function discountedPrice(int $centPrice, float $promo) : float{
     return $price;
 }
 
-function prixLivraison(array $listeCarriers, int $numeroLivreur) : float{
+function prixLivraison(array $listeCarriers, int $numeroLivreur, float $totalPrice) : float{
     $prixLivraison = 0;
     foreach($listeCarriers as $carrier){
         if($carrier["id"] === $numeroLivreur){
-            $prixLivraison = $carrier["shipping_cost"];
+            if($totalPrice > 20.00){
+                $prixLivraison = $carrier["increase_shipping"];
+            }else{
+                $prixLivraison = $carrier["shipping_cost"];
+            }
         }
     }
-    
     return $prixLivraison;
 }
 
