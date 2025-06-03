@@ -142,13 +142,16 @@ function cancelOrder(int $idOrder)
     }
 }
 
-function pull_carriers(float $totalPrice) : array{
-    $sqlPullCarriers = 'SELECT * FROM carrier;';
+function pull_carriers(float $totalPrice, int $totalWeight) : array{
+    $sqlPullCarriers = 'SELECT * FROM carrier WHERE max_weight >= :max_weight;';
     if($totalPrice > 20.00){
-        $sqlPullCarriers = 'SELECT * FROM carrier WHERE tracking;';
+        $sqlPullCarriers = 'SELECT * FROM carrier WHERE tracking = 1 AND max_weight >= :max_weight;';
     }
+
     $listCarriers = connectToDataBase()->prepare($sqlPullCarriers);
-    $listCarriers->execute();
+    $listCarriers->execute([
+        "max_weight" => $totalWeight,
+    ]);
 
     return $listCarriers->fetchAll();
 }

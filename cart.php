@@ -102,7 +102,8 @@ if (!empty($_GET["orderId"])) {
 $listLastOrder = listOrderUser(1);
 
 //recupération de la liste des livreur
-$listeCarriers = pull_carriers($_SESSION["prixTotal"]);
+$listeCarriers = pull_carriers($_SESSION["prixTotal"], $_SESSION["poidTotal"]);
+echo $_SESSION["poidTotal"];
 
 //Si il y a eu une requete get avec livreur, on met cette valeur dans session sinon par defaut "dhl"
 if (isset($_GET["livreur"])) {
