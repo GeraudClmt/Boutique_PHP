@@ -18,17 +18,8 @@ if (!isset($_SESSION["price"], $_SESSION["quantite"], $_SESSION["weight"], $_SES
     $_SESSION["discount"] = [];
     $_SESSION["weight"] = [];
 }
-//Si il y a eu une requete get avec livreur, on met cette valeur dans session sinon par defaut "dhl"
-if (isset($_GET["livreur"])) {
-    $_SESSION["livreur"] = htmlspecialchars($_GET["livreur"]);
-    if ($_SESSION["livreur"] == "dhl") {
-        $_SESSION["numeroLivreur"] = 1;
-    } else {
-        $_SESSION["numeroLivreur"] = 2;
-    }
-} else {
-    $_SESSION["livreur"] = "dhl";
-}
+
+
 
 //Si requete get avec "Vider le panier" appel fonction viderLePanier
 if ($_GET["viderPanier"] == "Vider le panier") {
@@ -96,10 +87,37 @@ foreach (array_keys($listeProduitCommande) as $i) {
     discountedPrice((int) $listeProduitCommande[$produit]["prixTotal"], (int)$listeProduitCommande[$produit]["discount"]);
 }
 
+if (!empty($_GET["orderId"])) {
+    cancelOrder($_GET["orderId"]);
+    header('Location: cart.php');
+    exit();
+}
+
+$listLastOrder = listOrderUser(1);
+
+//recupération de la liste des livreur
+$listeCarriers = pull_carriers($_SESSION["prixTotal"]);
+
+//Si il y a eu une requete get avec livreur, on met cette valeur dans session sinon par defaut "dhl"
+if (isset($_GET["livreur"])) {
+    $_SESSION["livreur"] = htmlspecialchars($_GET["livreur"]);
+
+    foreach($listeCarriers as $carrier){
+        if($carrier["name"] === $_SESSION["livreur"]){
+            $_SESSION["numeroLivreur"] = $carrier["id"];
+        }
+    }
+} else {
+    $_SESSION["livreur"] = "Colissimo";
+}
+
+
+
+//Click sur le boutton commander
 if ($_GET["commander"] == "true") {
     addOrder(
-        (float)$_SESSION["prixTotal"] + prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"]),
-        (float)prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"]),
+        (float)$_SESSION["prixTotal"] + prixLivraison($listeCarriers, $_SESSION["numeroLivreur"]),
+        (float)prixLivraison($listeCarriers, $_SESSION["numeroLivreur"]),
         (int)$_SESSION["poidTotal"],
         1,
         $_SESSION["numeroLivreur"]
@@ -113,15 +131,6 @@ if ($_GET["commander"] == "true") {
     exit();
 }
 
-//cancelOrder("103");
-
-if (!empty($_GET["orderId"])){
-    cancelOrder($_GET["orderId"]);
-    header('Location: cart.php');
-    exit();
-}
-
-$listLastOrder = listOrderUser(1);
 
 ?>
 
@@ -166,14 +175,12 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                 <form action="cart.php" method="get">
                     <fieldset class="containerChoixLivreurs">
                         <legend>Choix du livreur:</legend>
-                        <div>
-                            <input type="radio" id="dhl" name="livreur" value="dhl" <?= $_SESSION["livreur"] == "dhl" ? "checked" : "" ?> />
-                            <label for="dhl">DHL</label>
-                        </div>
-                        <div>
-                            <input type="radio" id="dpd" name="livreur" value="dpd" <?= $_SESSION["livreur"] == "dpd" ? "checked" : "" ?> />
-                            <label for="dpd">DPD</label>
-                        </div>
+                        <?php foreach ($listeCarriers as $carrier) { ?>
+                            <div class="m-2">
+                                <input type="radio" id="<?= $carrier["id"] ?>" name="livreur" value="<?= $carrier["name"] ?>" <?= $_SESSION["numeroLivreur"] == $carrier["id"] ? "checked" : "" ?> />
+                                <label for="<?= $carrier["id"] ?>"><?= $carrier["name"] ?></label>
+                            </div>
+                        <?php } ?>
                         <button class="btn btn-outline-success" type="submit">Recalculer avec le bon livreur</button>
                     </fieldset>
                     <input class="btn btn-outline-success" type="submit" name="viderPanier" value="Vider le panier" />
@@ -184,8 +191,8 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
 
                     <p>HT : <?= priceExcludingTVA($_SESSION["prixTotal"]) ?></p>
                     <p>TVA : <?= formatPrice($_SESSION["prixTotal"] * 0.2) ?> </p>
-                    <p>Livraison : <?= formatPrice(prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"])) ?> </p>
-                    <p>Total TTC : <?= formatPrice($_SESSION["prixTotal"] + prixLivraison($_SESSION["livreur"], $_SESSION["poidTotal"], $_SESSION["prixTotal"])) ?></p>
+                    <p>Livraison : <?= formatPrice(prixLivraison($listeCarriers, $_SESSION["numeroLivreur"])) ?> </p>
+                    <p>Total TTC : <?= formatPrice($_SESSION["prixTotal"] + prixLivraison($listeCarriers, $_SESSION["numeroLivreur"])) ?></p>
 
                 </div>
                 <form method="get" class="col d-flex justify-content-end m-4">
@@ -207,7 +214,7 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                         <input type="hidden" name="orderId" value="<?= $order["id"] ?>" />
                         <button type="submit" class="btn btn-danger">Annuler la commande</button>
                     </form>
-                <?php }?>
+                <?php } ?>
             <?php endif ?>
 
         </div>

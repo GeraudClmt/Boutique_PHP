@@ -15,29 +15,14 @@ function discountedPrice(int $centPrice, float $promo) : float{
     return $price;
 }
 
-function prixLivraison(string $livreur, int $poidTotal, float $prixTotal) : float{
+function prixLivraison(array $listeCarriers, int $numeroLivreur) : float{
     $prixLivraison = 0;
-    switch ($livreur){
-        case "dhl":
-            if($poidTotal >= 0 && $poidTotal <= 5){
-                $prixLivraison = 5;
-            }elseif($poidTotal > 500 && $poidTotal <= 2000){
-                $prixLivraison = $prixTotal * 0.1;
-            }else{
-                $prixLivraison = 0;
-            }
-        break;
-        case "dpd":
-            if($poidTotal >= 0 && $poidTotal <= 500){
-                $prixLivraison = 0;
-            }elseif($poidTotal > 500 && $poidTotal <= 2000){
-                $prixLivraison = $prixTotal * 0.13;
-            }else{
-                $prixLivraison = 0;
-            }
-        break;
+    foreach($listeCarriers as $carrier){
+        if($carrier["id"] === $numeroLivreur){
+            $prixLivraison = $carrier["shipping_cost"];
+        }
     }
-
+    
     return $prixLivraison;
 }
 

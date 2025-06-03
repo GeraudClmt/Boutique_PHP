@@ -139,3 +139,14 @@ function cancelOrder(int $idOrder)
         echo "Erreur suppression order";
     }
 }
+
+function pull_carriers(float $totalPrice) : array{
+    $sqlPullCarriers = 'SELECT * FROM carrier;';
+    if($totalPrice > 20.00){
+        $sqlPullCarriers = 'SELECT * FROM carrier WHERE tracking;';
+    }
+    $listCarriers = connectToDataBase()->prepare($sqlPullCarriers);
+    $listCarriers->execute();
+
+    return $listCarriers->fetchAll();
+}
