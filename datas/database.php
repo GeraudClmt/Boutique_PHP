@@ -19,12 +19,19 @@ function connectToDataBase(): PDO
     }
 }
 
-function pullTableProducts(): array
+function pullTableProducts(int $categories = 0): array
 {
-    $sqlQuery = 'SELECT * FROM products';
-    $productStatement = connectToDataBase()->prepare($sqlQuery);
-
-    $productStatement->execute();
+    if ($categories == 0) {
+        $sqlQuery = 'SELECT * FROM products;';
+        $productStatement = connectToDataBase()->prepare($sqlQuery);
+        $productStatement->execute();
+    } else {
+        $sqlQuery = 'SELECT * FROM products WHERE categories_id = :categories_id;';
+        $productStatement = connectToDataBase()->prepare($sqlQuery);
+        $productStatement->execute([
+            "categories_id" => $categories
+        ]);
+    }
 
     return $productStatement->fetchAll();
 }
@@ -76,7 +83,7 @@ function addOrder(float $total, float $shipping_cost, int $total_weight, int $cu
 
 function addOrder_product(string $name, float $price, int $quantity)
 {
-    echo "<br>" . $name ."<br>" . $price . "<br>" . $quantity . "<br>"; 
+    echo "<br>" . $name . "<br>" . $price . "<br>" . $quantity . "<br>";
     $connectionBDD = connectToDataBase();
     //SELECT id FROM products WHERE name = "Corde" AND price = 100;
     $sqlIdProduct = 'SELECT id FROM products WHERE name = :name AND ABS(price - :price) < 0.01';
@@ -142,9 +149,10 @@ function cancelOrder(int $idOrder)
     }
 }
 
-function pull_carriers(float $totalPrice, int $totalWeight) : array{
+function pull_carriers(float $totalPrice, int $totalWeight): array
+{
     $sqlPullCarriers = 'SELECT * FROM carrier WHERE max_weight >= :max_weight;';
-    if($totalPrice > 20.00){
+    if ($totalPrice > 20.00) {
         $sqlPullCarriers = 'SELECT * FROM carrier WHERE tracking = 1 AND max_weight >= :max_weight;';
     }
 
