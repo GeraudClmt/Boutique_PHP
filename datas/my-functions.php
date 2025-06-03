@@ -10,8 +10,8 @@ function priceExcludingTVA(float $priceTTC) : string{
     return $priceHT;
 }
 
-function discountedPrice(int $centPrice, float $promo) : float{
-    (int) $price = $centPrice - ($centPrice * $promo / 100);
+function discountedPrice(float $centPrice, float $promo) : float{
+    (float) $price = $centPrice - ($centPrice * $promo / 100);
     return $price;
 }
 

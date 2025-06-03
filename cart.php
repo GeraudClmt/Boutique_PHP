@@ -50,9 +50,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!empty($_POST["price"]) && !empty($_POST["quantite"]) && !empty($_POST["discount"]) && !empty($_POST["weight"])) {
         foreach ($_POST["quantite"] as $produit => $quantite) {
             if (isset($_SESSION["quantite"][$produit]) &&  $_SESSION["quantite"][$produit] != 0) {
-                $_SESSION["quantite"][$produit] = $_SESSION["quantite"][$produit] + (int)$quantite;
+                $_SESSION["quantite"][$produit] = $_SESSION["quantite"][$produit] + (float)$quantite;
             } else {
-                $_SESSION["quantite"][$produit] = 0 + (int)$quantite;
+                $_SESSION["quantite"][$produit] = 0 + (float)$quantite;
             }
 
             $_SESSION["price"][$produit] = $_POST["price"][$produit];
@@ -72,9 +72,9 @@ foreach (array_keys($_SESSION["quantite"]) as $item) {
             "name" => $item,
             "price" => $_SESSION["price"][$item],
             "quantite" => $_SESSION["quantite"][$item],
-            "prixTotal" => (int) $_SESSION["price"][$item] * (int) $_SESSION["quantite"][$item],
-            "discount" => (int) $_SESSION["discount"][$item],
-            "weight" => (int)$_SESSION["weight"][$item]
+            "prixTotal" => (float) $_SESSION["price"][$item] * (float) $_SESSION["quantite"][$item],
+            "discount" => (float) $_SESSION["discount"][$item],
+            "weight" => (float)$_SESSION["weight"][$item]
         ];
     }
 }
@@ -84,7 +84,7 @@ if (!empty($listeProduitCommande)) {
     //print_r($listeProduitCommande);
     foreach (array_keys($listeProduitCommande) as $i) {
         if ($listeProduitCommande[$i]["discount"] > 0) {
-            $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + discountedPrice((int)$listeProduitCommande[$i]["prixTotal"], (int)$listeProduitCommande[$i]["discount"]);
+            $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + discountedPrice((float)$listeProduitCommande[$i]["prixTotal"], (float)$listeProduitCommande[$i]["discount"]);
         } else {
             $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + $listeProduitCommande[$i]["prixTotal"];
         }
@@ -126,7 +126,7 @@ if (isset($_GET["commander"]) && $_GET["commander"] == "true") {
     addOrder(
         (float)$_SESSION["prixTotal"] + prixLivraison($listeCarriers, $_SESSION["numeroLivreur"], $_SESSION["prixTotal"]),
         (float)prixLivraison($listeCarriers, $_SESSION["numeroLivreur"], $_SESSION["prixTotal"]),
-        (int)$_SESSION["poidTotal"],
+        (float)$_SESSION["poidTotal"],
         1,
         $_SESSION["numeroLivreur"]
     );
@@ -136,7 +136,7 @@ if (isset($_GET["commander"]) && $_GET["commander"] == "true") {
         addOrder_product($product["name"], $product["price"], $product["quantite"]);
     }
 
-
+    $_SESSION["numeroLivreur"] = 1;
     viderLePanier();
     header('Location: cart.php');
     exit();
@@ -167,15 +167,15 @@ echo head("Panier", "Tous les acticles du panier sont ici.");
                         <p><?= $listeProduitCommande[$produit]["name"] ?></p>
                         <?php if ($listeProduitCommande[$produit]["discount"] > 0) : ?>
                             <div>
-                                <p class="solde"><?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?></p>
-                                <p><?= formatPrice(discountedPrice((int)$listeProduitCommande[$produit]["price"], (int)$listeProduitCommande[$produit]["discount"])) ?></p>
+                                <p class="solde"><?= formatPrice((float) $listeProduitCommande[$produit]["price"]) ?></p>
+                                <p><?= formatPrice(discountedPrice((float)$listeProduitCommande[$produit]["price"], (float)$listeProduitCommande[$produit]["discount"])) ?></p>
                             </div>
                             <input class="incrementeurPanier" type="number" name="changementQuantite[<?= $produit ?>]" value=<?= $listeProduitCommande[$produit]["quantite"] ?> min="0" max="100" />
-                            <p><?= formatPrice(discountedPrice((int) $listeProduitCommande[$produit]["prixTotal"], (int)$listeProduitCommande[$produit]["discount"])) ?> TTC</p>
+                            <p><?= formatPrice(discountedPrice((float) $listeProduitCommande[$produit]["prixTotal"], (float)$listeProduitCommande[$produit]["discount"])) ?> TTC</p>
                         <?php else : ?>
-                            <p><?= formatPrice((int) $listeProduitCommande[$produit]["price"]) ?></p>
+                            <p><?= formatPrice((float) $listeProduitCommande[$produit]["price"]) ?></p>
                             <input class="incrementeurPanier" type="number" name="changementQuantite[<?= $produit ?>]" value=<?= $listeProduitCommande[$produit]["quantite"] ?> min="0" max="100" />
-                            <p><?= formatPrice((int) $listeProduitCommande[$produit]["prixTotal"]) ?> TTC</p>
+                            <p><?= formatPrice((float) $listeProduitCommande[$produit]["prixTotal"]) ?> TTC</p>
                         <?php endif ?>
                     </div>
                 <?php }

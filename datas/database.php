@@ -58,11 +58,11 @@ function pullLastOrders(): array
 
 function totalOrdersOfTheDay(): array
 {
-    $sqlQuery = 'SELECT SUM(p.price * op.quantity) AS total FROM order_product op JOIN orders o ON o.id=op.order_id JOIN products p ON op.product_id = p.id WHERE date(date) = CURDATE();';
+    $sqlQuery = 'SELECT SUM(o.total) as total FROM orders o WHERE date(date) = CURDATE();';
     $listOrder = connectToDataBase()->prepare($sqlQuery);
 
     $listOrder->execute();
-    return $listOrder->fetchAll();
+    return $listOrder->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function addOrder(float $total, float $shipping_cost, int $total_weight, int $customer_id, int $carrier_id)
