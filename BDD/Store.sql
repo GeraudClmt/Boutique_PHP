@@ -11,7 +11,6 @@ DROP DATABASE IF EXISTS `Store`;
 CREATE DATABASE `Store` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `Store`;
 
--- Access denied for user &#039;user&#039;@&#039;localhost&#039; to database &#039;Store&#039;
 DROP TABLE IF EXISTS `addresses`;
 CREATE TABLE `addresses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -25,17 +24,23 @@ CREATE TABLE `addresses` (
 
 DROP TABLE IF EXISTS `carrier`;
 CREATE TABLE `carrier` (
-  `addresses` varchar(255) NOT NULL,
-  `shipping_cost` int(11) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `max_weight` varchar(255) NOT NULL,
+  `shipping_cost` int(11) NOT NULL,
+  `tracking` int(11) NOT NULL,
+  `increase_shipping` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `carrier` (`addresses`, `shipping_cost`, `id`, `name`) VALUES
-('adresse test',	10,	1,	'dhl'),
-('adresse test1',	10,	2,	'dpd');
+INSERT INTO `carrier` (`id`, `name`, `max_weight`, `shipping_cost`, `tracking`, `increase_shipping`) VALUES
+(1,	'Colissimo',	'500',	10,	1,	15),
+(2,	'Chronopost',	'500',	15,	0,	0),
+(3,	'Mondial Relay',	'3000',	25,	1,	30),
+(4,	'DHL',	'3500',	17,	0,	0),
+(5,	'UPS',	'4000',	25,	1,	27),
+(6,	'GLS',	'10000',	300,	1,	400);
 
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
@@ -138,7 +143,7 @@ DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `price` int(11) NOT NULL,
+  `price` float NOT NULL,
   `description` varchar(255) NOT NULL,
   `weight` varchar(6) NOT NULL,
   `img_url` varchar(255) NOT NULL,
@@ -152,19 +157,19 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `products` (`id`, `name`, `price`, `description`, `weight`, `img_url`, `quantity`, `availability`, `categories_id`, `discount`) VALUES
-(1,	'Corde',	100,	'Corde d\'assurance',	'1000',	'https://contents.mediadecathlon.com/p2615071/k\\$b2f1933c71b675afddb50d80df8b4a9b/sq/corde-descalade-95-mm-x-80-m-vertika.jpg?format=auto&f=800x0',	10,	1,	1,	2),
-(2,	'Piolet',	100,	'Piolet avec une supper acroche',	'1000',	'https://skitour.fr/matos/photos/5508.jpg',	10,	1,	1,	0),
-(3,	'Crampons',	10,	'Des crampons super confortable',	'500',	'https://www.montagnes-magazine.com/media/MATOS/2021/novembre/petzl.jpeg',	1,	1,	1,	10),
-(4,	'Corde',	10,	'Corde de 100m',	'500',	'https://www.montania-sport.com/46348-thickbox_default/corde-a-simple-escalade-80m-karma-98mm-solid-orange-beal.jpg',	1,	1,	1,	0),
-(5,	'Casque',	10,	'Casque aerodynamique',	'500',	'https://glisshop-glisshop-fr-storage.omn.proximis.com/Imagestorage/imagesSynchro/735/735/be2c82cdff7da0ca122e9a1565fe7d0d73cc7b64_H25PETZESC4453545_0.jpeg',	1,	0,	1,	2),
-(6,	'Gourde',	10,	'Gourde pour toujours avoir de l\'eau en montagne',	'500',	'https://shop-ta-gourde.com/cdn/shop/products/gourde_motif_montagne_1200x1200.jpg?v=1576860033',	1,	0,	1,	20),
-(7,	'Lampe',	13,	'Lanpe haute autonomie',	'500',	'https://www.ekipro.fr/7020-productlist/lampe-frontale-rechargeable-par-usb-noir.jpg',	0,	1,	2,	0),
-(8,	'Harnais',	13,	'Harnais haute résistance',	'500',	'https://www.montagnes-magazine.com/media/guide_matos/accessoire/2024/blueice_2024_cuestaw.jpg',	0,	1,	2,	0),
-(9,	'Sac',	50,	'Sac étanche',	'1200',	'https://www.pluceo.fr/4440-home_default/camp-sac-de-transport-epi-cargo-60l-blue.jpg',	2,	1,	2,	0),
-(10,	'Sac',	50,	'Sac grosse capacité',	'1200',	'https://media.rs-online.com/t_large/Y2442194-01.jpg',	2,	1,	2,	0),
-(11,	'Lunette C4',	500,	'Lunette classe 4 ',	'1200',	'https://www.visionalis.fr/medias/images/lunettes-de-montagne-avec-verres-correcteurs-julbo-legacy-noir-blanc.jpg',	5,	1,	3,	10),
-(12,	'Lunette',	500,	'Lunette moche',	'1200',	'https://www.silium-epi.com/wp-content/uploads/2020/09/LUNETTES-CONTOUR-POLARISE-BOLLE-600x450.jpg',	5,	1,	3,	0),
-(13,	'Sac à pof',	500,	'Sac ultra léger',	'1200',	'https://www.grimper.com/media/guide_equipement/img_2021/arcteryx_2021_ion_chalkbag_large__prop_1200x630.jpg',	5,	1,	3,	0);
+(1,	'Cordes',	112.99,	'Corde d\'assurance',	'1000',	'https://contents.mediadecathlon.com/p2615071/k\\$b2f1933c71b675afddb50d80df8b4a9b/sq/corde-descalade-95-mm-x-80-m-vertika.jpg?format=auto&f=800x0',	10,	1,	1,	2),
+(2,	'Piolet',	109.99,	'Piolet avec une supper acroche',	'1000',	'https://skitour.fr/matos/photos/5508.jpg',	10,	1,	1,	0),
+(3,	'Crampons',	110.99,	'Des crampons super confortable',	'500',	'https://www.montagnes-magazine.com/media/MATOS/2021/novembre/petzl.jpeg',	1,	1,	1,	10),
+(4,	'Corde',	149.99,	'Corde de 100m',	'500',	'https://www.montania-sport.com/46348-thickbox_default/corde-a-simple-escalade-80m-karma-98mm-solid-orange-beal.jpg',	1,	1,	1,	0),
+(5,	'Casque',	19.99,	'Casque aerodynamique',	'500',	'https://glisshop-glisshop-fr-storage.omn.proximis.com/Imagestorage/imagesSynchro/735/735/be2c82cdff7da0ca122e9a1565fe7d0d73cc7b64_H25PETZESC4453545_0.jpeg',	1,	0,	1,	2),
+(6,	'Gourde',	9.99,	'Gourde pour toujours avoir de l\'eau en montagne',	'500',	'https://shop-ta-gourde.com/cdn/shop/products/gourde_motif_montagne_1200x1200.jpg?v=1576860033',	1,	0,	1,	20),
+(7,	'Lampe',	13.99,	'Lanpe haute autonomie',	'500',	'https://www.ekipro.fr/7020-productlist/lampe-frontale-rechargeable-par-usb-noir.jpg',	0,	1,	2,	0),
+(8,	'Harnais',	34.99,	'Harnais haute résistance',	'500',	'https://www.montagnes-magazine.com/media/guide_matos/accessoire/2024/blueice_2024_cuestaw.jpg',	0,	1,	2,	0),
+(9,	'Sac à dos',	52.99,	'Sac étanche',	'1200',	'https://www.pluceo.fr/4440-home_default/camp-sac-de-transport-epi-cargo-60l-blue.jpg',	2,	1,	2,	0),
+(10,	'Sac',	156.99,	'Sac grosse capacité',	'1200',	'https://media.rs-online.com/t_large/Y2442194-01.jpg',	2,	1,	2,	0),
+(11,	'Lunette C4',	82.99,	'Lunette classe 4 ',	'1200',	'https://www.visionalis.fr/medias/images/lunettes-de-montagne-avec-verres-correcteurs-julbo-legacy-noir-blanc.jpg',	5,	1,	3,	10),
+(12,	'Lunette',	12.99,	'Lunette moche',	'1200',	'https://www.silium-epi.com/wp-content/uploads/2020/09/LUNETTES-CONTOUR-POLARISE-BOLLE-600x450.jpg',	5,	1,	3,	0),
+(13,	'Sac à pof',	19.99,	'Sac ultra léger',	'1200',	'https://www.grimper.com/media/guide_equipement/img_2021/arcteryx_2021_ion_chalkbag_large__prop_1200x630.jpg',	5,	1,	3,	0);
 
 DROP TABLE IF EXISTS `sql_playground_test`;
 CREATE TABLE `sql_playground_test` (
@@ -177,4 +182,4 @@ CREATE TABLE `sql_playground_test` (
 INSERT INTO `sql_playground_test` (`id`, `name`, `batch`) VALUES
 (1,	'Campus Numérique In The Alps',	1);
 
--- 2025-06-02 12:59:34 UTC
+-- 2025-06-03 10:30:00 UTC

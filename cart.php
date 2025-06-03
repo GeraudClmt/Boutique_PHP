@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+
 require_once 'datas/my-functions.php';
 require_once 'datas/database.php';
 
@@ -55,9 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["weight"][$produit] = $_POST["weight"][$produit];
         }
     }
-    //Recharge la parge cart.php
-    header(("Location: cart.php"));
-    //Arrete le script pour pas recharger le reste
+    header("Location: cart.php");
     exit();
 }
 
