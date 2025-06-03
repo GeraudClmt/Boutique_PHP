@@ -74,11 +74,12 @@ function addOrder(float $total, float $shipping_cost, int $total_weight, int $cu
     ]);
 }
 
-function addOrder_product(string $name, int $price, int $quantity)
+function addOrder_product(string $name, float $price, int $quantity)
 {
+    echo "<br>" . $name ."<br>" . $price . "<br>" . $quantity . "<br>"; 
     $connectionBDD = connectToDataBase();
     //SELECT id FROM products WHERE name = "Corde" AND price = 100;
-    $sqlIdProduct = 'SELECT id FROM products WHERE name = :name AND price = :price;';
+    $sqlIdProduct = 'SELECT id FROM products WHERE name = :name AND ABS(price - :price) < 0.01';
     $idProduct = $connectionBDD->prepare($sqlIdProduct);
     $idProduct->execute([
         'name' => $name,
@@ -86,6 +87,7 @@ function addOrder_product(string $name, int $price, int $quantity)
     ]);
 
     $id = $idProduct->fetchAll();
+    print_r($id);
 
     //SELECT MAX(id) FROM orders;
     $sqlIdLastOrder = 'SELECT MAX(id) FROM orders;';

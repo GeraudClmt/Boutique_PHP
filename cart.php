@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once 'datas/my-functions.php';
 require_once 'datas/database.php';
@@ -27,7 +27,7 @@ if (!isset($_SESSION["price"], $_SESSION["quantite"], $_SESSION["weight"], $_SES
 
 
 //Si requete get avec "Vider le panier" appel fonction viderLePanier
-if ($_GET["viderPanier"] == "Vider le panier") {
+if (isset($_GET["viderPanier"]) && $_GET["viderPanier"] == "Vider le panier") {
     viderLePanier();
 }
 
@@ -65,6 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 //Stockage de tous session dans un tableau pour l'exploitation
+
 foreach (array_keys($_SESSION["quantite"]) as $item) {
     if (isset($_SESSION["quantite"][$item]) && $_SESSION["quantite"][$item] != "0") {
         $listeProduitCommande[$item] = [
@@ -79,15 +80,16 @@ foreach (array_keys($_SESSION["quantite"]) as $item) {
 }
 
 //Calcul des prix total et poids
-foreach (array_keys($listeProduitCommande) as $i) {
-    if ($listeProduitCommande[$i]["discount"] > 0) {
-        $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + discountedPrice((int)$listeProduitCommande[$i]["prixTotal"], (int)$listeProduitCommande[$i]["discount"]);
-    } else {
-        $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + $listeProduitCommande[$i]["prixTotal"];
+if (!empty($listeProduitCommande)) {
+    //print_r($listeProduitCommande);
+    foreach (array_keys($listeProduitCommande) as $i) {
+        if ($listeProduitCommande[$i]["discount"] > 0) {
+            $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + discountedPrice((int)$listeProduitCommande[$i]["prixTotal"], (int)$listeProduitCommande[$i]["discount"]);
+        } else {
+            $_SESSION["prixTotal"] = $_SESSION["prixTotal"] + $listeProduitCommande[$i]["prixTotal"];
+        }
+        $_SESSION["poidTotal"] = $_SESSION["poidTotal"] + ($listeProduitCommande[$i]["weight"] * $listeProduitCommande[$i]["quantite"]);
     }
-    $_SESSION["poidTotal"] = $_SESSION["poidTotal"] + ($listeProduitCommande[$i]["weight"] * $listeProduitCommande[$i]["quantite"]);
-
-    discountedPrice((int) $listeProduitCommande[$produit]["prixTotal"], (int)$listeProduitCommande[$produit]["discount"]);
 }
 
 if (!empty($_GET["orderId"])) {
@@ -106,8 +108,8 @@ $listeCarriers = pull_carriers($_SESSION["prixTotal"]);
 if (isset($_GET["livreur"])) {
     $_SESSION["livreur"] = htmlspecialchars($_GET["livreur"]);
 
-    foreach($listeCarriers as $carrier){
-        if($carrier["name"] === $_SESSION["livreur"]){
+    foreach ($listeCarriers as $carrier) {
+        if ($carrier["name"] === $_SESSION["livreur"]) {
             $_SESSION["numeroLivreur"] = $carrier["id"];
         }
     }
@@ -118,17 +120,22 @@ if (isset($_GET["livreur"])) {
 
 
 //Click sur le boutton commander
-if ($_GET["commander"] == "true") {
+
+if (isset($_GET["commander"]) && $_GET["commander"] == "true") {
+
     addOrder(
-        (float)$_SESSION["prixTotal"] + prixLivraison($listeCarriers, $_SESSION["numeroLivreur"], $_SESSION["prixTotal"] ),
+        (float)$_SESSION["prixTotal"] + prixLivraison($listeCarriers, $_SESSION["numeroLivreur"], $_SESSION["prixTotal"]),
         (float)prixLivraison($listeCarriers, $_SESSION["numeroLivreur"], $_SESSION["prixTotal"]),
         (int)$_SESSION["poidTotal"],
         1,
         $_SESSION["numeroLivreur"]
     );
+
     foreach ($listeProduitCommande as $product) {
+
         addOrder_product($product["name"], $product["price"], $product["quantite"]);
     }
+
 
     viderLePanier();
     header('Location: cart.php');
