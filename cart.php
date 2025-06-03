@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 require_once 'datas/my-functions.php';
 require_once 'datas/database.php';
@@ -103,7 +103,6 @@ $listLastOrder = listOrderUser(1);
 
 //recupération de la liste des livreur
 $listeCarriers = pull_carriers($_SESSION["prixTotal"], $_SESSION["poidTotal"]);
-echo $_SESSION["poidTotal"];
 
 //Si il y a eu une requete get avec livreur, on met cette valeur dans session sinon par defaut "dhl"
 if (isset($_GET["livreur"])) {

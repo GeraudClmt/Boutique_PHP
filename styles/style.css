@@ -11,8 +11,17 @@ main{
     justify-content: space-between;
     padding: 0.5em;
     border-bottom: 2px solid black;
-    background: url("../assets/background.png");
-    background-size: cover;
+
+    /* background: url("../assets/background.png");
+    background-size: cover; */
+}
+.banniere div{
+    z-index: 1;
+}
+.imgBanniere{
+    opacity: 0.4;
+    position: absolute;
+    z-index: 0;
 }
 .footer{
     border-top: 2px solid black;
